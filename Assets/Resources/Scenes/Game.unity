@@ -2052,7 +2052,8 @@ MonoBehaviour:
   _netGuyConfig: {fileID: 11400000, guid: 0380147e93dde074490ad04b07cd84a6, type: 2}
   _batteryConfig: {fileID: 11400000, guid: 09ff6330c9c5503459cc3ac7d93fd886, type: 2}
   _clientConfig: {fileID: 11400000, guid: 6a6ab063228d84d93a15f9dd25eb1fa2, type: 2}
-  _pizzaEjectorConfig: {fileID: 0}
+  _pizzaEjectorConfig: {fileID: 11400000, guid: 8dca3c939234e400cb3f68bf71c26cd0,
+    type: 2}
   _pizzaConfig: {fileID: 11400000, guid: 2b5785f0d6e8ed144a164aa7ca58d572, type: 2}
   _birdsDensity: 2
   _carsDensity: 25
