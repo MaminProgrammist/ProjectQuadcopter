@@ -19,8 +19,6 @@ namespace Entities
         {
             PizzaEjector pizzaEjector = Object.Instantiate(_config.Prefab);
 
-            PizzaPoint pizzaPoint = pizzaEjector.gameObject.GetComponentInChildren<PizzaPoint>();
-
             pizzaEjector.gameObject.SetActive(false);
             pizzaEjector.gameObject.AddComponent<Disappearer>().OnDisappear += () => _deliverer.DropPizza();
 
@@ -28,7 +26,7 @@ namespace Entities
             _deliverer.OnDeliverySequenceFailed += () => pizzaEjector.gameObject.SetActive(false);
 
             BoxDetector boxDetector = pizzaEjector
-                .AddReaction<BoxDetector, Quadcopter>(new PizzaThrowingReaction(_deliverer, _flyingPizza, pizzaPoint, pizzaEjector));
+                .AddReaction<BoxDetector, Quadcopter>(new PizzaThrowingReaction(_deliverer, _flyingPizza, pizzaEjector));
 
             boxDetector.Receive(_config);
 
