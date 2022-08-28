@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace Entities
 {
+    [System.Obsolete]
 	public class PizzaPoint : MonoBehaviour
     {
         private void OnDrawGizmos()
