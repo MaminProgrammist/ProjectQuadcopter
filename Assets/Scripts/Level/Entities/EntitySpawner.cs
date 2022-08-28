@@ -22,7 +22,7 @@ namespace Entities
         private bool _isClientRequested;
         private Deliverer _deliverer;
         private Pizza _pizza;
-        private PizzaGuy _pizzaGuy;
+        private PizzaEjector _pizzaEjector;
 
         [SerializeField, BoxGroup("Configurations")] private QuadcopterConfig _quadcopterConfig;
         [SerializeField, BoxGroup("Configurations")] private BirdConfig _birdConfig;
@@ -30,7 +30,7 @@ namespace Entities
         [SerializeField, BoxGroup("Configurations")] private NetGuyConfig _netGuyConfig;
         [SerializeField, BoxGroup("Configurations")] private BatteryConfig _batteryConfig;
         [SerializeField, BoxGroup("Configurations")] private ClientConfig _clientConfig;
-        [SerializeField, BoxGroup("Configurations")] private PizzaGuyConfig _pizzeriaGuyConfig;
+        [SerializeField, BoxGroup("Configurations")] private PizzaEjectorConfig _pizzaEjectorConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaConfig _pizzaConfig;
 
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _birdsDensity;
@@ -96,8 +96,8 @@ namespace Entities
 
         private void EnablePizzaGuy(Container entityContainer, ChunkGenerator chunkGenerator)
         {
-            _pizzaGuy = new PizzaGuyFactory(_pizzeriaGuyConfig, _deliverer, _pizza, _quadcopter).GetCreated();
-            _pizzaGuy.transform.SetParent(entityContainer.transform);
+            _pizzaEjector = new PizzaEjectorFactory(_pizzaEjectorConfig, _deliverer, _pizza).GetCreated();
+            _pizzaEjector.transform.SetParent(entityContainer.transform);
             chunkGenerator.OnPizzeriaSpawned += SpawnPizzaGuy;
         }
 
@@ -110,10 +110,10 @@ namespace Entities
 
         private void SpawnPizzaGuy(PizzaDispensePoint dispensePoint)
         {
-            PizzaGuy pizzeriaGuy = _pizzaGuy;
-            pizzeriaGuy.gameObject.SetActive(true);
-            pizzeriaGuy.transform.position = (dispensePoint.transform.position);
-            pizzeriaGuy.transform.eulerAngles = Vector3.up * (pizzeriaGuy.transform.position.x < 0 ? 180 : 0);
+            PizzaEjector pizzaEjector = _pizzaEjector;
+            pizzaEjector.gameObject.SetActive(true);
+            pizzaEjector.transform.position = (dispensePoint.transform.position);
+            pizzaEjector.transform.eulerAngles = Vector3.up * (pizzaEjector.transform.position.x < 0 ? 180 : 0);
         }
 
         private IEnumerator CarSpawning(int line)
