@@ -10,19 +10,19 @@ namespace Reactions
         private readonly Deliverer _deliverer;
         private readonly Pizza _flyingPizza;
         private readonly PizzaPoint _pizzaPoint;
-        private readonly PizzaGuy _pizzaGuy;
+        private readonly PizzaEjector _pizzaEjector;
 
-        public PizzaThrowingReaction(Deliverer deliverer, Pizza pizza, PizzaPoint pizzaPoint, PizzaGuy pizzaGuy)
+        public PizzaThrowingReaction(Deliverer deliverer, Pizza pizza, PizzaPoint pizzaPoint, PizzaEjector pizzaGuy)
         {
             _flyingPizza = pizza;
             _deliverer = deliverer;
             _pizzaPoint = pizzaPoint;
-            _pizzaGuy = pizzaGuy;
+            _pizzaEjector = pizzaGuy;
         }
 
         public override void React()
         {
-            _pizzaGuy.StartCoroutine(Throwing());
+            _pizzaEjector.StartCoroutine(Throwing());
         }
 
 
