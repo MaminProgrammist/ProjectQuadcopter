@@ -9,26 +9,20 @@ namespace Reactions
     {
         private readonly Deliverer _deliverer;
         private readonly Pizza _flyingPizza;
-        private readonly PizzaPoint _pizzaPoint;
         private readonly PizzaEjector _pizzaEjector;
 
-        public PizzaThrowingReaction(Deliverer deliverer, Pizza pizza, PizzaPoint pizzaPoint, PizzaEjector pizzaGuy)
+        public PizzaThrowingReaction(Deliverer deliverer, Pizza pizza, PizzaEjector pizzaEjector)
         {
             _flyingPizza = pizza;
             _deliverer = deliverer;
-            _pizzaPoint = pizzaPoint;
-            _pizzaEjector = pizzaGuy;
+            _pizzaEjector = pizzaEjector;
         }
 
-        public override void React()
-        {
-            _pizzaEjector.StartCoroutine(Throwing());
-        }
-
+        public override void React() => _pizzaEjector.StartCoroutine(Throwing());
 
         private IEnumerator Throwing()
         {
-            _flyingPizza.transform.position = _pizzaPoint.transform.position;
+            _flyingPizza.transform.position = _pizzaEjector.transform.position;
             yield return new WaitForEndOfFrame();
             _flyingPizza.gameObject.SetActive(true);
             _deliverer.ThrowPizza();
