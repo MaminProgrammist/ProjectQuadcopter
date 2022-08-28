@@ -4,7 +4,8 @@ using General;
 
 namespace Entities
 {
-    [CreateAssetMenu(menuName = "Config/PizzaGuy", fileName = "New Pizza Guy Config")]
+    // [CreateAssetMenu(menuName = "Config/PizzaGuy", fileName = "New Pizza Guy Config")]
+    [System.Obsolete]
     public class PizzaGuyConfig : Config, ICanDetect, ICanMove
     {
         [SerializeField] private PizzaGuy[] _prefabs;

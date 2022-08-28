@@ -4,6 +4,7 @@ using Reactions;
 
 namespace Entities
 {
+    [System.Obsolete]
     public class PizzaGuyFactory : EntityFactory<PizzaGuy, PizzaGuyConfig>
     {
         private Deliverer _deliverer;
@@ -27,10 +28,10 @@ namespace Entities
             _deliverer.OnPizzaGrabbed += () => pizzaGuy.gameObject.SetActive(false);
             _deliverer.OnDeliverySequenceFailed += () => pizzaGuy.gameObject.SetActive(false);
 
-            BoxDetector boxDetector = pizzaGuy
-                .AddReaction<BoxDetector, Quadcopter>(new PizzaThrowingReaction(_deliverer, _flyingPizza, pizzaPoint, pizzaGuy));
+            //BoxDetector boxDetector = pizzaGuy
+            //    .AddReaction<BoxDetector, Quadcopter>(new PizzaThrowingReaction(_deliverer, _flyingPizza, pizzaPoint, pizzaGuy));
 
-            boxDetector.Receive(_config);
+            //boxDetector.Receive(_config);
 
             pizzaGuy.gameObject
                 .AddComponent<Mover>()
