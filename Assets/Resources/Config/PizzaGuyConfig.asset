@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabs:
   - {fileID: 3317516387296616037, guid: 9569cb5a2f46ef54483e54bea096d5a2, type: 3}
-  _xDetectionRange: {x: -9, y: 9}
+  _xDetectionRange: {x: -25, y: 25}
   _zDetectionRange: {x: -40, y: 0}
   _yDetectionRange: {x: 0, y: 15}
