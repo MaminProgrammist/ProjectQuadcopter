@@ -24,6 +24,6 @@ MonoBehaviour:
   - {fileID: 310586760892719651, guid: eeda91aa78d323643a431f96f359f019, type: 3}
   _shoveOutSpeed: 1
   _shoveInSpeed: 2
-  _xDetectionRange: {x: -10, y: 10}
+  _xDetectionRange: {x: -12, y: 12}
   _yDetectionRange: {x: -1, y: 1}
   _zDetectionRange: {x: -20, y: 0}

@@ -29,7 +29,7 @@ namespace General
             _chunkGenerator.EnableChunks(chunkContainer);
             _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel);
             _entitySpawner.EnableCarTraffic(entityContainer);
-            //_entitySpawner.EnableBirds(entityContainer);
+            _entitySpawner.EnableBirds(entityContainer);
             _entitySpawner.EnableNetGuys(entityContainer);
             //_entitySpawner.EnableBatteries(entityContainer);
             _entitySpawner.EnableDelivery(entityContainer, _chunkGenerator);

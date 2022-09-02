@@ -49,7 +49,7 @@ MonoBehaviour:
     type: 3}
   _closedMesh: {fileID: -8160381725529666871, guid: 908347be3bec8304cb41434f70a2a984,
     type: 3}
-  _offset: 3
+  _offset: 2.5
 --- !u!1 &5976048002327128254
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,8 +111,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 754e0debbe07cd84ba71e0946ee1bbea, type: 2}
-  - {fileID: 2100000, guid: 754e0debbe07cd84ba71e0946ee1bbea, type: 2}
   - {fileID: 2100000, guid: 754e0debbe07cd84ba71e0946ee1bbea, type: 2}
   - {fileID: 8556262120643298411, guid: 63708b270b49ae241b5883d2ee312407, type: 3}
   m_StaticBatchInfo:

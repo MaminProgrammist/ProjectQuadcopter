@@ -40,7 +40,7 @@ namespace Chunk
             float offset = 3.5f;
             _lastRoad = Instantiate(_chunkDatabase.StartableChunk,
             _wayMatrix.GetPosition(MatrixPosition.Down) + Vector3.down * offset,
-            Quaternion.identity, chunkContainer.transform);
+            _chunkDatabase.StartableChunk.transform.rotation, chunkContainer.transform);
             _lastRoad.gameObject.AddComponent<Mover>().Receive(_chunkDatabase);
             _lastRoad.gameObject.AddComponent<Disappearer>();
 
@@ -53,7 +53,7 @@ namespace Chunk
             _windows.Clear();
             _lastRoad = _roadPool.Get(_lastRoad.CentralConnectPosition);
             int side1 = Random.Range(0, 2) == 0 ? -1 : 1;
-            int side2 = side1 == 1 ? -1 : 1;
+            int side2 = side1 * -1;
             GetPieceOfChunk(side1);
             GetPieceOfChunk(side2);
             OnSpawnChunk?.Invoke(_windows);
@@ -79,8 +79,8 @@ namespace Chunk
                 pieceOfChunk = district;
             }
 
-            pieceOfChunk.transform.position += new Vector3(side, 0) * pieceOfChunk.Size.x / 2;
-            float rotation = side == 1 ? 180 : 0;
+            pieceOfChunk.transform.position += new Vector3(side, 0) * pieceOfChunk.Size.z / 2;
+            float rotation = side == 1 ? -90 : 90;
             pieceOfChunk.transform.localEulerAngles = new Vector3(0, rotation, 0);
             if(pizzeria != null) OnPizzeriaSpawned?.Invoke(pizzeria.PizzaDispensePoint);
             return pieceOfChunk;

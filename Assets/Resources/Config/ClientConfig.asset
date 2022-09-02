@@ -21,6 +21,6 @@ MonoBehaviour:
   - {fileID: -621389816603593634, guid: 9f9e44dc127402542bc7867226286efb, type: 3}
   - {fileID: -621389816603593634, guid: f258c506f8849d84a97f9182fa99e2a3, type: 3}
   - {fileID: -621389816603593634, guid: 915e3d8da33779c479ac7dc854289772, type: 3}
-  _xDetectionRange: {x: -10, y: 10}
+  _xDetectionRange: {x: -12, y: 12}
   _zDetectionRange: {x: -10, y: 0}
   _yDetectionRange: {x: -1, y: 1}

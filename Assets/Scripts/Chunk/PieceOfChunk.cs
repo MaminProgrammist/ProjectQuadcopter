@@ -7,6 +7,6 @@ namespace Chunk
     {
         public Vector3 Size { get; private set; }
 
-        protected virtual void Awake() => Size = GetComponentInChildren<MeshRenderer>().bounds.size;
+        protected virtual void Awake() => Size = GetComponent<MeshRenderer>().bounds.size;
     }
 }
