@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ChunkConfig
   m_EditorClassIdentifier: 
   _districtsPrefab:
-  - {fileID: 4677570057250131931, guid: ebd729525dc06b549b0cd901d2958d00, type: 3}
+  - {fileID: 4479412602440094679, guid: e307b88409f2b8448b661745e7273b84, type: 3}
   _districtsWithPizzeriaPrefab:
-  - {fileID: 8744387387029418915, guid: 4524ee612690337418c3f42d121c56a6, type: 3}
+  - {fileID: 3536238422419521427, guid: fa91ded59cddf5c4eb78ef986474dfa9, type: 3}
   _roadPrefab: {fileID: 6588104049705733261, guid: 78a8a8953446f484eb0fd3028f4408c1,
     type: 3}
   _startableChunk: {fileID: 6588104049705733261, guid: 6a463fdb556b7db4597c78b4f3d7cd78,
