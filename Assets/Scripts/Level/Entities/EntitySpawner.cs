@@ -10,6 +10,8 @@ using Chunk;
 using UI;
 using Components;
 using Random = UnityEngine.Random;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Entities
 {
@@ -49,43 +51,55 @@ namespace Entities
             GlobalSpeedService.OnStop += StopAllCoroutines;
         }
 
-        public Quadcopter EnableQuadcopter(Container entityContainer, DefeatPanel defeatPanel)
+        public bool EnableQuadcopter(Container entityContainer, DefeatPanel defeatPanel, out Quadcopter quadcopter)
         {
             LifeDisplayer lifeCounter = FindObjectOfType<LifeDisplayer>();
             AdsRewardedButton rewardedButton = FindObjectOfType<AdsRewardedButton>();
 
             _quadcopter = GetCreatedEntity(new QuadcopterFactory(_quadcopterConfig, entityContainer, lifeCounter, defeatPanel, rewardedButton));
             _deliverer = _quadcopter.GetComponent<Deliverer>();
-            return _quadcopter;
+            quadcopter = _quadcopter;
+            Debug.Log("Copter enabled");
+            return true;
         }
 
-        public void EnableCarTraffic(Container entityContainer)
+        public bool EnableCarTraffic(Container entityContainer)
         {
             _pools[typeof(Car)] = new Pool<Car>(new CarFactory(_carConfig), entityContainer, 10);
+            Debug.Log("Cars enabled");
+            return true;
         }
 
-        public void EnableBirds(Container entityContainer)
+        public bool EnableBirds(Container entityContainer)
         {
             _pools[typeof(Bird)] = new Pool<Bird>(new BirdFactory(_birdConfig), entityContainer, 10);
+            Debug.Log("Birds enabled");
+            return true;
         }
 
-        public void EnableNetGuys(Container entityContainer)
+        public bool EnableNetGuys(Container entityContainer)
         {
             _pools[typeof(NetGuy)] = new Pool<NetGuy>(new NetGuyFactory(_netGuyConfig), entityContainer, 10);
+            Debug.Log("Guys enabled");
+            return true;
         }
 
-        public void EnableBatteries(Container entityContainer)
+        public bool EnableBatteries(Container entityContainer)
         {
             _pools[typeof(Battery)] = new Pool<Battery>(new BatteryFactory(_batteryConfig), entityContainer, 3);
             _quadcopter.GetComponent<Charger>().OnDecreased += SpawnBattery;
+            Debug.Log("Guys enabled");
+            return true;
         }
 
-        public void EnableDelivery(Container entityContainer, ChunkGenerator chunkGenerator)
+        public bool EnableDelivery(Container entityContainer, ChunkGenerator chunkGenerator)
         {
             _deliverer.OnPizzeriaRequested += _chunkGenerator.RequestPizzeria;
             EnablePizza(entityContainer);
             EnablePizzaGuy(entityContainer, chunkGenerator);
             EnableClient(entityContainer);
+            Debug.Log("Delivery enabled");
+            return true;
         }
 
         private void EnablePizza(Container entityContainer)
