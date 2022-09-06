@@ -1,31 +1,26 @@
-﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using NaughtyAttributes;
+using System.Collections;
 
-namespace General
+public class GameLoader : MonoBehaviour
 {
-    public class GameLoader : MonoBehaviour
+    private int loadedPercentage = 0;
+    private LoadingProgressBar _progressBar;
+
+    private void Awake() => _progressBar = FindObjectOfType<LoadingProgressBar>();
+
+    private void Start() => StartCoroutine(SceneLoadingProgress());
+
+    private IEnumerator SceneLoadingProgress()
     {
-        public const int GameSceneIndex = 1;
-
-        private Slider _progressSlider;
-
-        private void Awake() => _progressSlider = GetComponentInChildren<Slider>();
-
-        private void Start() => StartCoroutine(Loading());
-
-        private IEnumerator Loading()
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        while (loadedPercentage <= 100)
         {
-            AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(GameSceneIndex);
-
-            while (loadingOperation.isDone == false)
-            {
-                _progressSlider.value = Mathf.Clamp01(loadingOperation.progress / 0.9f);
-                yield return null;
-            }
-
-            yield break;
+            loadedPercentage++;
+            _progressBar.SetProgress(loadedPercentage);
+            yield return new WaitForFixedUpdate();
         }
+        SceneManager.UnloadSceneAsync(0);
     }
 }
