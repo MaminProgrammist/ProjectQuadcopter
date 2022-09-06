@@ -302,8 +302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9799ec808fb4e25b2f352a95ca4348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadedPercentage: 0
-  _progressBar: {fileID: 0}
 --- !u!1 &724599865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5b1b7847eae4db6b82bf010e9fa18c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slider: {fileID: 0}
 --- !u!1 &2126098613
 GameObject:
   m_ObjectHideFlags: 0
