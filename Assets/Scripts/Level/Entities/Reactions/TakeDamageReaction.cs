@@ -13,6 +13,7 @@ namespace Reactions
         private Collider _collider;
         private SwipeController _swipeController;
         private QuadcopterNextReaction _nextReaction;
+        private PizzaFallenReaction _pizzaFallenReaction;
 
         public TakeDamageReaction(Quadcopter quadcopter, QuadcopterConfig config)
         {
@@ -21,6 +22,7 @@ namespace Reactions
             _collider = quadcopter.GetComponent<Collider>();
             _swipeController = quadcopter.GetComponentInChildren<SwipeController>();
             _nextReaction = new QuadcopterNextReaction(quadcopter, config);
+            _pizzaFallenReaction = new(quadcopter.GetComponent<Deliverer>());
         }
 
         public override void React()
@@ -34,6 +36,7 @@ namespace Reactions
 
             _renderer.enabled = false;
             _collider.enabled = false;
+            _pizzaFallenReaction.React();
         }
 
         private IEnumerator Focus()

@@ -8,7 +8,7 @@ namespace General
         public const int Height = 3;
 
         public const float VerticalSpacing = 5.8f;
-        public const float HorizontalSpacing = 3.5f;
+        public const float HorizontalSpacing = 6.5f;
 
         public const float Horizon = 200f;
         public readonly float DisappearPoint;

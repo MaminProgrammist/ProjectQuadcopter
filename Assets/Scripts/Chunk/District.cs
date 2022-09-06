@@ -4,7 +4,7 @@ namespace Chunk
 {
     public class District : PieceOfChunk 
     {
-        private List<Window> _windows = new List<Window>();
+        private List<Window> _windows = new();
 
         protected override void Awake()
         {

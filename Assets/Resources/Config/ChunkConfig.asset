@@ -13,20 +13,10 @@ MonoBehaviour:
   m_Name: ChunkConfig
   m_EditorClassIdentifier: 
   _districtsPrefab:
-  - {fileID: -7031122738548866231, guid: 4eeaf81de868e844cac89dc96c5062d6, type: 3}
-  - {fileID: 5244046296709692432, guid: 146d64694dbe1d7409e23e28cd892d90, type: 3}
-  - {fileID: 2435827300984679549, guid: 766f20ec00824174c8f348acd974bda5, type: 3}
-  - {fileID: 2224033142950272196, guid: d866be60e3c52fd49907b6279fc61249, type: 3}
-  - {fileID: 2224033142950272196, guid: 34b51fe44d6459d4b84a9e83a66270c9, type: 3}
-  - {fileID: 2435827300984679549, guid: 2440fc0970897c644be8b935a898503f, type: 3}
-  - {fileID: 5244046296709692432, guid: 3ddb1f09d73a990428ffeb8f11b2ff0c, type: 3}
-  - {fileID: 5244046296709692432, guid: 206b1b73305c9874c826b01549c66c8c, type: 3}
-  - {fileID: 2435827300984679549, guid: bda344dca9876d646b8c385642c4c288, type: 3}
-  - {fileID: 5244046296709692432, guid: 575ebc93f0cc21946b412ebdf4c8c259, type: 3}
-  - {fileID: 2435827300984679549, guid: dd1ead4d6797b03428d2acee1449c5b4, type: 3}
+  - {fileID: 4479412602440094679, guid: e307b88409f2b8448b661745e7273b84, type: 3}
   _districtsWithPizzeriaPrefab:
-  - {fileID: 6553268357612478213, guid: 1402e1696d26f364eb8f84c394887fbe, type: 3}
-  _roadPrefab: {fileID: 1362130198009995443, guid: c6bf8b0f60100384fb47103b13840fc1,
+  - {fileID: 3536238422419521427, guid: fa91ded59cddf5c4eb78ef986474dfa9, type: 3}
+  _roadPrefab: {fileID: 6588104049705733261, guid: 78a8a8953446f484eb0fd3028f4408c1,
     type: 3}
-  _startableChunk: {fileID: 1362130198009995443, guid: 8f13b4608566d2441834cac8b99d45ec,
+  _startableChunk: {fileID: 6588104049705733261, guid: 6a463fdb556b7db4597c78b4f3d7cd78,
     type: 3}

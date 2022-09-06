@@ -9,6 +9,7 @@ namespace Ads
 
         public const string GameID = "4865760";
         public const string RewardedVideo = "Rewarded_Android";
+        public const string Banner = "Banner_Android";
 
         private void Awake() => Advertisement.Initialize(GameID, _isTestMode, this);
 

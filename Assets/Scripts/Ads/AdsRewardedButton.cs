@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using Services;
@@ -36,7 +37,7 @@ namespace Ads
             {
                 case UnityAdsShowCompletionState.SKIPPED:
                     Advertisement.Load(AdsInitializer.RewardedVideo, this);
-                    //Стартуем заново
+                    SceneManager.LoadScene(0);
                     break;
 
                 case UnityAdsShowCompletionState.COMPLETED:
@@ -46,6 +47,7 @@ namespace Ads
                     break;
 
                 case UnityAdsShowCompletionState.UNKNOWN:
+                    SceneManager.LoadScene(0);
                     break;
             }
         }
