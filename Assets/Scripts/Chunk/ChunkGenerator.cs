@@ -24,13 +24,15 @@ namespace Chunk
         private Road _lastRoad;
         private List<Window> _windows = new();
         
-        public void EnableChunks(Container chunksContainer) 
+        public bool EnableChunks(Container chunksContainer) 
         {
             _roadPool = new(new RoadFactory(_chunkDatabase, SpawnChunk), chunksContainer, _startableChunksCount);
             _districtPool = new(new DistrictFactory(_chunkDatabase), chunksContainer, _chunkDatabase.DistrictsPrefabsCount);
             _pizzeriaPool = new(new DistrictWithPizzeriaFactory(_chunkDatabase), chunksContainer, _chunkDatabase.DistrictsWithPizzeeriaPrefabsCount);
             SpawnStartableChunks(chunksContainer, _startableChunksCount);
             _isPizzeriaRequested = true;
+            Debug.Log("Chunks enabled");
+            return true;
         }
 
         public void RequestPizzeria() => _isPizzeriaRequested = true;
