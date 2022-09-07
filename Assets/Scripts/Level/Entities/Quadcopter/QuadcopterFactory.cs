@@ -14,6 +14,7 @@ namespace Entities
         private LifeDisplayer _lifeCounter;
         private DefeatPanel _defeatPanel;
         private AdsRewardedButton _rewardedButton;
+        private ParticleSystem _poofParticle;
 
         public QuadcopterFactory(QuadcopterConfig config, Container container, LifeDisplayer lifeCounter, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton)
             : base(config, container) 
@@ -21,6 +22,7 @@ namespace Entities
             _lifeCounter = lifeCounter;
             _defeatPanel = defeatPanel;
             _rewardedButton = rewardedButton;
+            _poofParticle = Resources.Load<ParticleSystem>("Art/Epic Toon FX/Prefabs/Environment/Smoke/White/SmokeExplosionWhite");
         }
 
         public override Quadcopter GetCreated()
@@ -48,18 +50,22 @@ namespace Entities
             Pizza pizza = quadcopter.GetComponentInChildren<Pizza>();
             pizza.gameObject.SetActive(false);
 
-            deliverer.OnDeliverySequenceFailed += () => pizza.transform
-            .DOPunchScale(Vector3.one, 0.2f, 2)
-            .OnComplete(() => pizza.gameObject.SetActive(false));
+            deliverer.OnDeliverySequenceFailed += () =>
+            {
+                Object.Instantiate(_poofParticle, quadcopter.transform);
+                pizza.gameObject.SetActive(false);
+            };
 
-            deliverer.OnSuccessfulDelivery += () => pizza.transform
-            .DOPunchScale(Vector3.one, 0.2f, 2)
-            .OnComplete(() => pizza.gameObject.SetActive(false));
+            deliverer.OnSuccessfulDelivery += () =>
+            {
+                Object.Instantiate(_poofParticle, quadcopter.transform);
+                pizza.gameObject.SetActive(false);
+            };
 
             deliverer.OnPizzaGrabbed += () =>
             {
-                pizza.gameObject.SetActive(true); 
-                pizza.transform.DOPunchScale(Vector3.one, 0.2f, 2);
+                Object.Instantiate(_poofParticle, quadcopter.transform);
+                pizza.gameObject.SetActive(true);
             };
 
             quadcopter.AddReaction<CollisionDetector, Bird, Car, Net>(new TakeDamageReaction(quadcopter, _config));

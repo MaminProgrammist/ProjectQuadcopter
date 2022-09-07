@@ -14,6 +14,7 @@ namespace Reactions
         private SwipeController _swipeController;
         private QuadcopterNextReaction _nextReaction;
         private PizzaFallenReaction _pizzaFallenReaction;
+        private ParticleSystem _exploreParticle;
 
         public TakeDamageReaction(Quadcopter quadcopter, QuadcopterConfig config)
         {
@@ -23,6 +24,7 @@ namespace Reactions
             _swipeController = quadcopter.GetComponentInChildren<SwipeController>();
             _nextReaction = new QuadcopterNextReaction(quadcopter, config);
             _pizzaFallenReaction = new(quadcopter.GetComponent<Deliverer>());
+            _exploreParticle = Resources.Load<ParticleSystem>("Art/Epic Toon FX/Prefabs/Combat/Explosions/RoundExplosion/ExplosionRoundFire");
         }
 
         public override void React()
@@ -41,7 +43,7 @@ namespace Reactions
 
         private IEnumerator Focus()
         {
-            //Фокусируемся на месте смерти.
+            Object.Instantiate(_exploreParticle, _lifer.transform);
             yield return new WaitForSeconds(1);
             _nextReaction.React();
             GlobalSpeedService.Instance.enabled = true;

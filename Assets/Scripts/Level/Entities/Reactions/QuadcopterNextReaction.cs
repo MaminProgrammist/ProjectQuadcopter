@@ -20,6 +20,7 @@ namespace Reactions
             _swipeController = quadcopter.GetComponent<SwipeController>();
             _takeNextDuration = config.MotionDuration * 3;
             _immortalReaction = new(quadcopter, config);
+            
         }
 
         public override void React()
