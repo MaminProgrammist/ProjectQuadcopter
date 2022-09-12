@@ -16,6 +16,8 @@ namespace Entities
         [SerializeField, Range(1, 100)] private int _successfulDeliveryReward;
         [SerializeField, Range(1, 100)] private int _fineForFailedDelivery;
         [SerializeField] private Vector3 _pizzaConnectionPoint;
+        [SerializeField] private ParticleSystem _poofParticle;
+        [SerializeField] private ParticleSystem _destroyingParticle;
 
         public Quadcopter Prefab => _prefab;
         public int MaxLives => _lives;
@@ -27,5 +29,7 @@ namespace Entities
         public int SuccessfulDeliveryReward => _successfulDeliveryReward;
         public int FineForFailedDelivery => _fineForFailedDelivery;
         public Vector3 PizzaConnectionPoint => _pizzaConnectionPoint;
+        public ParticleSystem PoofParticle => _poofParticle;
+        public ParticleSystem DestroyingParticle => _destroyingParticle;
     }
 }

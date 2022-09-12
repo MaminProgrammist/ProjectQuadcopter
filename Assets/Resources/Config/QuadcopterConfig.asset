@@ -22,3 +22,6 @@ MonoBehaviour:
   _successfulDeliveryReward: 10
   _fineForFailedDelivery: 7
   _pizzaConnectionPoint: {x: 0, y: -0.65, z: 0}
+  _poofParticle: {fileID: 19855650, guid: fe394d041df1a0547990f49cf653249f, type: 3}
+  _destroyingParticle: {fileID: 19811046, guid: e6ea0c2b13012484ba2f5dc1054e6d75,
+    type: 3}

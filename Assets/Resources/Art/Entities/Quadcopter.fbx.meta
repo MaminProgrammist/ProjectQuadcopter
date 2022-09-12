@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0154090653ccbb54496302d34250ff28
+guid: 4a31669e2e30b724ba5669c7215f12b9
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
@@ -8,7 +8,7 @@ ModelImporter:
     second: DownStrafe
   - first:
       74: -8945691123924629249
-    second: Armature|Idle
+    second: Idle
   - first:
       74: -2766843141536150808
     second: LeftStrafe
@@ -16,12 +16,17 @@ ModelImporter:
       74: -37742227047103879
     second: RightStrafe
   - first:
+      74: -8817953565090158344
+    second: Start
+  - first:
       74: 9163159621682474919
     second: UpStrafe
+  externalObjects:
   - first:
-      74: -3100369314251171874
-    second: Idle
-  externalObjects: {}
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 754e0debbe07cd84ba71e0946ee1bbea, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -55,7 +60,7 @@ ModelImporter:
       takeName: Armature|DownStrafe
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -91,7 +96,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -113,7 +118,7 @@ ModelImporter:
       takeName: Armature|LeftStrafe
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -142,7 +147,36 @@ ModelImporter:
       takeName: Armature|RightStrafe
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Start
+      takeName: Armature|Start
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -171,7 +205,7 @@ ModelImporter:
       takeName: Armature|UpStrafe
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -251,7 +285,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.5
+    globalScale: 0.005
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

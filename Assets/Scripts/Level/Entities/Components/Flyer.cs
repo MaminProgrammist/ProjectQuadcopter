@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using General;
-using Services;
 using Entities;
+using UnityEngine;
 
 namespace Components
 {
@@ -10,11 +10,13 @@ namespace Components
         private Tweener _flightTweener;
         private Quadcopter _quadcopter;
         private Deliverer _deliveryrer;
+        private SwipeController _swipeController;
 
         private void Awake()
         {
             _quadcopter = FindObjectOfType<Quadcopter>();
             _deliveryrer = _quadcopter.GetComponent<Deliverer>();
+            _swipeController = _quadcopter.GetComponent<SwipeController>();
         }
 
         private void OnEnable()
@@ -22,17 +24,22 @@ namespace Components
             _flightTweener = transform
                 .DOMove(_quadcopter.transform.position, _config.FlightTime)
                 .SetEase(Ease.Linear)
-                .SetAutoKill(false);
+                .SetAutoKill(false)
+                .OnComplete(() => 
+                {
+                    gameObject.SetActive(false);
+                    _deliveryrer.GrabPizza();
+                });
 
-            UpdateService.OnUpdate += SetTarget;
+            _swipeController.OnMove += SetTarget;
         }
 
-        private void SetTarget() => _flightTweener?.ChangeEndValue(_quadcopter.transform.position, true)?.Restart();
+        private void SetTarget(Vector3 quadcopterPosition) => _flightTweener?.ChangeEndValue(quadcopterPosition, true).Restart();
 
         private void OnDisable()
         {
             _flightTweener.Kill();
-            UpdateService.OnUpdate -= SetTarget;
+            _swipeController.OnMove -= SetTarget;
         }
     }
 }

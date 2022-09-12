@@ -14,9 +14,9 @@ namespace Reactions
         private SwipeController _swipeController;
         private QuadcopterNextReaction _nextReaction;
         private PizzaFallenReaction _pizzaFallenReaction;
-        private ParticleSystem _exploreParticle;
+        private ParticleSystem _destroyingParticle;
 
-        public TakeDamageReaction(Quadcopter quadcopter, QuadcopterConfig config)
+        public TakeDamageReaction(Quadcopter quadcopter, QuadcopterConfig config, ParticleSystem destroyingParticle)
         {
             _lifer = quadcopter.GetComponent<Lifer>();
             _renderer = quadcopter.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -24,7 +24,7 @@ namespace Reactions
             _swipeController = quadcopter.GetComponentInChildren<SwipeController>();
             _nextReaction = new QuadcopterNextReaction(quadcopter, config);
             _pizzaFallenReaction = new(quadcopter.GetComponent<Deliverer>());
-            _exploreParticle = Resources.Load<ParticleSystem>("Art/Epic Toon FX/Prefabs/Combat/Explosions/RoundExplosion/ExplosionRoundFire");
+            _destroyingParticle = destroyingParticle;
         }
 
         public override void React()
@@ -43,11 +43,14 @@ namespace Reactions
 
         private IEnumerator Focus()
         {
-            Object.Instantiate(_exploreParticle, _lifer.transform);
+            if (_detectableEntity is Net == false)
+                _destroyingParticle.Play();
+
             yield return new WaitForSeconds(1);
             _nextReaction.React();
             GlobalSpeedService.Instance.enabled = true;
             yield break;
+
         }
     }
 }

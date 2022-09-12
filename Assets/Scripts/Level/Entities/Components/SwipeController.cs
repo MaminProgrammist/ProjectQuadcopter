@@ -5,11 +5,14 @@ using Input;
 using General;
 using Services;
 using Entities;
+using System;
 
 namespace Components
 {
     public class SwipeController : ConfigReceiver<QuadcopterConfig>
     {
+        public event Action<Vector3> OnMove;
+
         private WayMatrix _wayMatrix = new();
         private Vector2Int _currentPosition;
         private Animator _animator;
@@ -51,8 +54,10 @@ namespace Components
         private void UpdatePosition(Vector2Int positionShift)
         {
             CurrentPosition = new Vector2Int(CurrentPosition.x + positionShift.x, CurrentPosition.y - positionShift.y);
-            transform.DOMove(_wayMatrix.GetPositionByArrayCoordinates(CurrentPosition), _config.MotionDuration);
+            Vector3 updatedPosition = _wayMatrix.GetPositionByArrayCoordinates(CurrentPosition);
+            transform.DOMove(updatedPosition, _config.MotionDuration);
             _animator.Play(_animations[positionShift]);
+            OnMove?.Invoke(updatedPosition);
         }
 
         private void OnDisable() => SwipeHandler.OnSwipe -= UpdatePosition;

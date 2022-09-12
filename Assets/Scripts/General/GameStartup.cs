@@ -4,11 +4,7 @@ using UI;
 using Chunk;
 using Level;
 using Entities;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
 using System.Collections;
-using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -44,13 +40,13 @@ namespace General
             yield return new WaitUntil(() => _chunkGenerator.EnableChunks(chunkContainer));
             yield return new WaitUntil(() => _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel, out Quadcopter quadcopter));
             yield return new WaitUntil(() => _entitySpawner.EnableCarTraffic(entityContainer));
-            //yield return new WaitUntil(() => _entitySpawner.EnableBirds(entityContainer));
+            yield return new WaitUntil(() => _entitySpawner.EnableBirds(entityContainer));
             yield return new WaitUntil(() => _entitySpawner.EnableNetGuys(entityContainer));
             //yield return new WaitUntil(() => _entitySpawner.EnableBatteries(entityContainer));
             yield return new WaitUntil(() => _entitySpawner.EnableDelivery(entityContainer, _chunkGenerator));
             GlobalSpeedService.Instance.enabled = false;
             _defeatPanel.gameObject.SetActive(false);
-            SceneManager.sceneUnloaded += (scene) => _tapToStartButton.enabled = true;
+            _tapToStartButton.enabled = true;
         }
     }
 }

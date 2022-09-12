@@ -14,7 +14,6 @@ namespace Entities
         private LifeDisplayer _lifeCounter;
         private DefeatPanel _defeatPanel;
         private AdsRewardedButton _rewardedButton;
-        private ParticleSystem _poofParticle;
 
         public QuadcopterFactory(QuadcopterConfig config, Container container, LifeDisplayer lifeCounter, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton)
             : base(config, container) 
@@ -22,13 +21,11 @@ namespace Entities
             _lifeCounter = lifeCounter;
             _defeatPanel = defeatPanel;
             _rewardedButton = rewardedButton;
-            _poofParticle = Resources.Load<ParticleSystem>("Art/Epic Toon FX/Prefabs/Environment/Smoke/White/SmokeExplosionWhite");
         }
 
         public override Quadcopter GetCreated()
         {
             Quadcopter quadcopter = Object.Instantiate(_config.Prefab, _container.transform);
-            TakeDamageReaction takeDamageReaction = new(quadcopter, _config);
 
             MoneyService.SetInitialAmount();
 
@@ -50,26 +47,28 @@ namespace Entities
             Pizza pizza = quadcopter.GetComponentInChildren<Pizza>();
             pizza.gameObject.SetActive(false);
 
+            ParticleSystem poofParticle = Object.Instantiate(_config.PoofParticle, quadcopter.transform);
+            ParticleSystem destroyParticle = Object.Instantiate(_config.DestroyingParticle, quadcopter.transform);
+
             deliverer.OnDeliverySequenceFailed += () =>
             {
-                Object.Instantiate(_poofParticle, quadcopter.transform);
+                poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnSuccessfulDelivery += () =>
             {
-                Object.Instantiate(_poofParticle, quadcopter.transform);
+                poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnPizzaGrabbed += () =>
             {
-                Object.Instantiate(_poofParticle, quadcopter.transform);
+                poofParticle.Play();
                 pizza.gameObject.SetActive(true);
             };
 
-            quadcopter.AddReaction<CollisionDetector, Bird, Car, Net>(new TakeDamageReaction(quadcopter, _config));
-            quadcopter.AddReaction<CollisionDetector, Pizza>(new GrabPizzaReaction(pizza, deliverer));
+            quadcopter.AddReaction<CollisionDetector, Bird, Car, Net>(new TakeDamageReaction(quadcopter, _config, destroyParticle));
 
             GlobalSpeedService.OnStartup += () =>
             {
