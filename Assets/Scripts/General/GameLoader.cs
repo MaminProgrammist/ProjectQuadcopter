@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using NaughtyAttributes;
 using System.Collections;
 
 public class GameLoader : MonoBehaviour
 {
-    private int loadedPercentage = 0;
+    private int _loadedPercentage = 0;
     private LoadingProgressBar _progressBar;
 
     private void Awake() => _progressBar = FindObjectOfType<LoadingProgressBar>();
@@ -14,13 +13,13 @@ public class GameLoader : MonoBehaviour
 
     private IEnumerator SceneLoadingProgress()
     {
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-        while (loadedPercentage <= 100)
+        SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+        while (_loadedPercentage <= 100)
         {
-            loadedPercentage++;
-            _progressBar.SetProgress(loadedPercentage);
+            _loadedPercentage++;
+            _progressBar.SetProgress(_loadedPercentage);
             yield return new WaitForFixedUpdate();
         }
-        SceneManager.UnloadSceneAsync(0);
+        SceneManager.UnloadSceneAsync(1);
     }
 }
