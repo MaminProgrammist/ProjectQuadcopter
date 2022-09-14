@@ -1,45 +1,34 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using UnityEngine;
 using General;
 using Entities;
-using UnityEngine;
 
 namespace Components
 {
     public class Flyer : ConfigReceiver<PizzaConfig>
     {
-        private Tweener _flightTweener;
         private Quadcopter _quadcopter;
         private Deliverer _deliveryrer;
-        private SwipeController _swipeController;
 
         private void Awake()
         {
             _quadcopter = FindObjectOfType<Quadcopter>();
             _deliveryrer = _quadcopter.GetComponent<Deliverer>();
-            _swipeController = _quadcopter.GetComponent<SwipeController>();
         }
 
-        private void OnEnable()
+        private void OnEnable() => StartCoroutine(Flight());
+
+        private IEnumerator Flight()
         {
-            _flightTweener = transform
-                .DOMove(_quadcopter.transform.position, _config.FlightTime)
-                .SetEase(Ease.Linear)
-                .SetAutoKill(false)
-                .OnComplete(() => 
-                {
-                    gameObject.SetActive(false);
-                    _deliveryrer.GrabPizza();
-                });
+            while (transform.position != _quadcopter.transform.position)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _quadcopter.transform.position, 1 / _config.FlightTime);
+                yield return null;
+            }
 
-            _swipeController.OnMove += SetTarget;
-        }
-
-        private void SetTarget(Vector3 quadcopterPosition) => _flightTweener?.ChangeEndValue(quadcopterPosition, true).Restart();
-
-        private void OnDisable()
-        {
-            _flightTweener.Kill();
-            _swipeController.OnMove -= SetTarget;
+            gameObject.SetActive(false);
+            _deliveryrer.GrabPizza();
+            yield break;
         }
     }
 }
