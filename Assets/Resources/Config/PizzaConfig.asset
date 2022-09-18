@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pizzaPrefab: {fileID: 8595192218742284104, guid: 34f1c64648cee4d26832e430c36dd934,
     type: 3}
-  _flightTime: 0.5
+  _flightTime: 2

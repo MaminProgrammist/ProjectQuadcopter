@@ -23,6 +23,7 @@ namespace Components
             while (transform.position != _quadcopter.transform.position)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _quadcopter.transform.position, 1 / _config.FlightTime);
+                transform.Rotate(Vector3.up, _config.RotatingSpeed, Space.World);
                 yield return null;
             }
 

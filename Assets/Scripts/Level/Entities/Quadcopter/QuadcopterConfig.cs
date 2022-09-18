@@ -18,6 +18,8 @@ namespace Entities
         [SerializeField] private Vector3 _pizzaConnectionPoint;
         [SerializeField] private ParticleSystem _poofParticle;
         [SerializeField] private ParticleSystem _destroyingParticle;
+        [SerializeField] private AudioClip _poofSound;
+        [SerializeField] private AudioClip _destroyingSound;
 
         public Quadcopter Prefab => _prefab;
         public int MaxLives => _lives;
@@ -31,5 +33,7 @@ namespace Entities
         public Vector3 PizzaConnectionPoint => _pizzaConnectionPoint;
         public ParticleSystem PoofParticle => _poofParticle;
         public ParticleSystem DestroyingParticle => _destroyingParticle;
+        public AudioClip PoofSound => _poofSound;
+        public AudioClip DestroyingSound => _destroyingSound;
     }
 }

@@ -5,7 +5,6 @@ using Ads;
 using UI;
 using Components;
 using Reactions;
-using DG.Tweening;
 
 namespace Entities
 {
@@ -28,6 +27,8 @@ namespace Entities
             Quadcopter quadcopter = Object.Instantiate(_config.Prefab, _container.transform);
 
             MoneyService.SetInitialAmount();
+
+            AudioSource audioSource = quadcopter.GetComponent<AudioSource>();
 
             SwipeController swipeController = quadcopter.gameObject.AddComponent<SwipeController>();
             swipeController.Receive(_config);
@@ -52,18 +53,24 @@ namespace Entities
 
             deliverer.OnDeliverySequenceFailed += () =>
             {
+                audioSource.clip = _config.PoofSound;
+                audioSource.Play();
                 poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnSuccessfulDelivery += () =>
             {
+                audioSource.clip = _config.PoofSound;
+                audioSource.Play();
                 poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnPizzaGrabbed += () =>
             {
+                audioSource.clip = _config.PoofSound;
+                audioSource.Play();
                 poofParticle.Play();
                 pizza.gameObject.SetActive(true);
             };
