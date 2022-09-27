@@ -75,7 +75,7 @@ namespace Entities
                 pizza.gameObject.SetActive(true);
             };
 
-            quadcopter.AddReaction<CollisionDetector, Bird, Car, Net>(new TakeDamageReaction(quadcopter, _config, destroyParticle));
+            quadcopter.AddReaction<CollisionDetector, Bird, Car, Weapon>(new TakeDamageReaction(quadcopter, _config, destroyParticle));
 
             GlobalSpeedService.OnStartup += () =>
             {

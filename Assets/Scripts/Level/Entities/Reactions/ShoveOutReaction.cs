@@ -7,12 +7,12 @@ namespace Reactions
 {
     public class ShoveOutReaction : Reaction
     {
-        private NetGuy _netGuy;
-        private NetGuyConfig _config;
+        private Guy _netGuy;
+        private GuyConfig _config;
         private Animator _animator;
         private float _shoveOutSpeed;
 
-        public ShoveOutReaction(NetGuy netGuy, NetGuyConfig config)
+        public ShoveOutReaction(Guy netGuy, GuyConfig config)
         {
             _netGuy = netGuy;
             _config = config;

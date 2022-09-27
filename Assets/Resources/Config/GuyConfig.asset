@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053b8a617f5eb7c4f891de1e2af19903, type: 3}
+  m_Name: GuyConfig
+  m_EditorClassIdentifier: 
+  _guyPrefabs:
+  - {fileID: 5917012183079924583, guid: 00c7a47acc6f9f846a18b81784ad1ac4, type: 3}
+  - {fileID: 5917012183079924583, guid: 03f01fd39eafb6845a5f4d1cab8bc6ba, type: 3}
+  - {fileID: 5917012183079924583, guid: e0ad4d4a22f7466419593bb2c1ac66a1, type: 3}
+  - {fileID: 5917012183079924583, guid: adb80d9e094ee964eb9acfdf0309532a, type: 3}
+  - {fileID: 5917012183079924583, guid: 117261f89ae58194398f2b7d6cf4c822, type: 3}
+  - {fileID: 5917012183079924583, guid: c588ff3f95c42234caaedce9a52b0930, type: 3}
+  - {fileID: 5917012183079924583, guid: 2b604349b879f43419f5d0f9007d8046, type: 3}
+  - {fileID: 5917012183079924583, guid: bd7e955b4d010f7488499529f8b54838, type: 3}
+  - {fileID: 5917012183079924583, guid: f4d95a85d1ed7544fb15dfdf6a7baa46, type: 3}
+  _weaponPrefabs:
+  - {fileID: 3402241771196532024, guid: eeda91aa78d323643a431f96f359f019, type: 3}
+  - {fileID: 5052815274619779373, guid: b8f91b950deb14b418e3c71fc0822c6f, type: 3}
+  - {fileID: 6002787627692704296, guid: 15b0d4d897dbf144da130e64ce23b062, type: 3}
+  _shoveOutSpeed: 2
+  _shoveInSpeed: 1
+  _xDetectionRange: {x: -12, y: 12}
+  _yDetectionRange: {x: 1, y: 1}
+  _zDetectionRange: {x: -15, y: 1}
