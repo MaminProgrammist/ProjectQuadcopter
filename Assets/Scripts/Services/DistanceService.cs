@@ -9,11 +9,8 @@ namespace Services
 
         private double _distance;
 
-        private void OnEnable()
-        {
-            UpdateService.OnFixedUpdate += UpdateDistance;
-        }
-
+        private void OnEnable() => UpdateService.OnFixedUpdate += UpdateDistance;
+        
         public double Distance
         {
             private set
@@ -26,14 +23,11 @@ namespace Services
             get => _distance;
         }
 
-        private void UpdateDistance()
-        {
-            Distance += GlobalSpeedService.Speed * Time.fixedDeltaTime;
-        }
+        public void ResetDistance() => Distance = 0;   
 
-        private void OnDisable()
-        {
-            UpdateService.OnFixedUpdate -= UpdateDistance;
-        }
+        private void UpdateDistance() => Distance += GlobalSpeedService.Speed * Time.fixedDeltaTime;
+
+        private void OnDisable() => UpdateService.OnFixedUpdate -= UpdateDistance;
+        
     }
 }

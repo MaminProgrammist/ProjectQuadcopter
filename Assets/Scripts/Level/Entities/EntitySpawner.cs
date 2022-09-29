@@ -51,12 +51,28 @@ namespace Entities
             GlobalSpeedService.OnStop += StopAllCoroutines;
         }
 
+        public void ResetEntities()
+        {
+            DispawnAll();
+        }
+
+        private void DispawnAll()
+        {
+            Entity[] entities = FindObjectsOfType<Entity>();
+            for (int i = 0; i < entities.Length; i++)
+            {
+                entities[i].gameObject.SetActive(false);
+            }
+            _quadcopter.gameObject.SetActive(true);
+        }
+
         public bool EnableQuadcopter(Container entityContainer, DefeatPanel defeatPanel, out Quadcopter quadcopter)
         {
             LifeDisplayer lifeCounter = FindObjectOfType<LifeDisplayer>();
             AdsRewardedButton rewardedButton = FindObjectOfType<AdsRewardedButton>();
+            RestartLevelButton levelRestarter = FindObjectOfType<RestartLevelButton>(); 
 
-            _quadcopter = GetCreatedEntity(new QuadcopterFactory(_quadcopterConfig, entityContainer, lifeCounter, defeatPanel, rewardedButton));
+            _quadcopter = GetCreatedEntity(new QuadcopterFactory(_quadcopterConfig, entityContainer, lifeCounter, defeatPanel, rewardedButton, levelRestarter));
             _deliverer = _quadcopter.GetComponent<Deliverer>();
             quadcopter = _quadcopter;
             Debug.Log("Copter enabled");
