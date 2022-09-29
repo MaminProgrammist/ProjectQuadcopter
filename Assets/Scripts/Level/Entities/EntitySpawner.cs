@@ -75,28 +75,24 @@ namespace Entities
             _quadcopter = GetCreatedEntity(new QuadcopterFactory(_quadcopterConfig, entityContainer, lifeCounter, defeatPanel, rewardedButton, levelRestarter));
             _deliverer = _quadcopter.GetComponent<Deliverer>();
             quadcopter = _quadcopter;
-            Debug.Log("Copter enabled");
             return true;
         }
 
         public bool EnableCarTraffic(Container entityContainer)
         {
             _pools[typeof(Car)] = new Pool<Car>(new CarFactory(_carConfig), entityContainer, 10);
-            Debug.Log("Cars enabled");
             return true;
         }
 
         public bool EnableBirds(Container entityContainer)
         {
             _pools[typeof(Bird)] = new Pool<Bird>(new BirdFactory(_birdConfig), entityContainer, 10);
-            Debug.Log("Birds enabled");
             return true;
         }
 
         public bool EnableNetGuys(Container entityContainer)
         {
             _pools[typeof(NetGuy)] = new Pool<NetGuy>(new NetGuyFactory(_netGuyConfig), entityContainer, 10);
-            Debug.Log("Guys enabled");
             return true;
         }
 
@@ -104,7 +100,6 @@ namespace Entities
         {
             _pools[typeof(Battery)] = new Pool<Battery>(new BatteryFactory(_batteryConfig), entityContainer, 3);
             _quadcopter.GetComponent<Charger>().OnDecreased += SpawnBattery;
-            Debug.Log("Guys enabled");
             return true;
         }
 
@@ -114,7 +109,6 @@ namespace Entities
             EnablePizza(entityContainer);
             EnablePizzaGuy(entityContainer, chunkGenerator);
             EnableClient(entityContainer);
-            Debug.Log("Delivery enabled");
             return true;
         }
 
