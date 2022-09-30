@@ -16,7 +16,7 @@ namespace Entities
             bird.gameObject.AddComponent<Disappearer>();
 
             bird.AddReaction<CollisionDetector, Quadcopter, Car>(new BirdKillingReaction(bird)).Receive(_config);
-            bird.AddReaction<CollisionDetector, NetGuy>(new FreezingReaction()).Receive(_config);
+            bird.AddReaction<CollisionDetector, Guy>(new FreezingReaction()).Receive(_config);
             bird.AddReaction<FrontDetector, Quadcopter>(new BirdFearOfCollisionReaction(bird)).Receive(_config);
             bird.GetComponentInChildren<Animator>().keepAnimatorControllerStateOnDisable = true;
 

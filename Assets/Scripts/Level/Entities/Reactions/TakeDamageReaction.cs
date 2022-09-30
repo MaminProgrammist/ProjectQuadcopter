@@ -48,7 +48,7 @@ namespace Reactions
 
         private IEnumerator Focus()
         {
-            if (_detectableEntity is Net == false)
+            if (_detectableEntity is Weapon == false)
             {
                 _audioSource.clip = _config.DestroyingSound;
                 _audioSource.Play();

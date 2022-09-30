@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: CarConfig
   m_EditorClassIdentifier: 
   _prefabs:
-  - {fileID: 5066961233641141595, guid: f4deb85e11c91ea479774027be804021, type: 3}
   - {fileID: 5066961233641141595, guid: e50f49afd40126346b4c9705f9c21e32, type: 3}
   - {fileID: 5066961233641141595, guid: 2ec43ffbace227747a2802cc56464ee7, type: 3}
   - {fileID: 5066961233641141595, guid: 68162c24873e16b48bf9ea17a2c393de, type: 3}

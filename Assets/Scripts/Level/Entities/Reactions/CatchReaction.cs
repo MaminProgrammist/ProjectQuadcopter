@@ -7,12 +7,12 @@ namespace Reactions
 {
     public class CatchReaction : Reaction
     {
-        private NetGuy _netGuy;
+        private Guy _netGuy;
         private Animator _animator;
-        private NetGuyConfig _config;
+        private GuyConfig _config;
         private Animation _animation;
 
-        public CatchReaction(NetGuy netGuy, NetGuyConfig config)
+        public CatchReaction(Guy netGuy, GuyConfig config)
         {
             _netGuy = netGuy;
             _config = config;

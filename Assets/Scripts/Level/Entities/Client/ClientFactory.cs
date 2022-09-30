@@ -25,9 +25,9 @@ namespace Entities
                 .AddComponent<Mover>()
                 .Receive(_config);
 
-            _deliverer.OnDeliverySequenceFailed += () => {
-                client.gameObject.SetActive(false);
-            };
+            //client.gameObject.AddComponent<Markerer>().SetImage(Object.FindObjectOfType<ClientMarker>().GetComponent<Image>());
+
+            _deliverer.OnDeliverySequenceFailed += () => client.gameObject.SetActive(false);
             return client;
         }
     }

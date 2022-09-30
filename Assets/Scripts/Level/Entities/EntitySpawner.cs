@@ -29,7 +29,7 @@ namespace Entities
         [SerializeField, BoxGroup("Configurations")] private QuadcopterConfig _quadcopterConfig;
         [SerializeField, BoxGroup("Configurations")] private BirdConfig _birdConfig;
         [SerializeField, BoxGroup("Configurations")] private CarConfig _carConfig;
-        [SerializeField, BoxGroup("Configurations")] private NetGuyConfig _netGuyConfig;
+        [SerializeField, BoxGroup("Configurations")] private GuyConfig _guyConfig;
         [SerializeField, BoxGroup("Configurations")] private BatteryConfig _batteryConfig;
         [SerializeField, BoxGroup("Configurations")] private ClientConfig _clientConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaEjectorConfig _pizzaEjectorConfig;
@@ -92,7 +92,7 @@ namespace Entities
 
         public bool EnableNetGuys(Container entityContainer)
         {
-            _pools[typeof(NetGuy)] = new Pool<NetGuy>(new NetGuyFactory(_netGuyConfig), entityContainer, 10);
+            _pools[typeof(Guy)] = new Pool<Guy>(new GuyFactory(_guyConfig), entityContainer, 10);
             return true;
         }
 
@@ -233,8 +233,8 @@ namespace Entities
                     client.GetComponentInChildren<Animator>().SetFloat(AnimationService.Parameters.Side, Mathf.Clamp(client.transform.position.x, -1, 1));
                     _isClientRequested = false;
                 }
-                else if (IsEnabled<NetGuy>())
-                    GetPool<NetGuy>().Get(window.GetSpawnPoint());
+                else if (IsEnabled<Guy>())
+                    GetPool<Guy>().Get(window.GetSpawnPoint());
 
                 window.Open();
             }

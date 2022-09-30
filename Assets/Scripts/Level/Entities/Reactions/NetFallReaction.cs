@@ -7,7 +7,7 @@ namespace Reactions
     {
         private Animator _animator;
 
-        public NetFallReaction(NetGuy netGuy) => _animator = netGuy.GetComponent<Animator>();
+        public NetFallReaction(Guy netGuy) => _animator = netGuy.GetComponent<Animator>();
 
         public override void React()
         {
