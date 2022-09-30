@@ -23,16 +23,36 @@ namespace Chunk
         private Pool<PizzeriaDistrict> _pizzeriaPool;
         private Road _lastRoad;
         private List<Window> _windows = new();
-        
+        private Container _chunksContainer;
+
         public bool EnableChunks(Container chunksContainer) 
         {
             _roadPool = new(new RoadFactory(_chunkDatabase, SpawnChunk), chunksContainer, _startableChunksCount);
             _districtPool = new(new DistrictFactory(_chunkDatabase), chunksContainer, _chunkDatabase.DistrictsPrefabsCount);
             _pizzeriaPool = new(new DistrictWithPizzeriaFactory(_chunkDatabase), chunksContainer, _chunkDatabase.DistrictsWithPizzeeriaPrefabsCount);
             SpawnStartableChunks(chunksContainer, _startableChunksCount);
+            _chunksContainer = chunksContainer;
             _isPizzeriaRequested = true;
             Debug.Log("Chunks enabled");
             return true;
+        }
+
+        public bool ResetChunks()
+        {
+            RemoveAllChunks();
+            SpawnStartableChunks(_chunksContainer, _startableChunksCount);
+            _isPizzeriaRequested = true;
+            Debug.Log("Chunks re-enabled");
+            return true;
+        }
+
+        private void RemoveAllChunks()
+        {
+            PieceOfChunk[] chunks = FindObjectsOfType<PieceOfChunk>();
+            for (int i = 0; i < chunks.Length; i++)
+            {
+                chunks[i].gameObject.SetActive(false);
+            }
         }
 
         public void RequestPizzeria() => _isPizzeriaRequested = true;

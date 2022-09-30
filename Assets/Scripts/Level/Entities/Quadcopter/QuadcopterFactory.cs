@@ -13,13 +13,15 @@ namespace Entities
         private LifeDisplayer _lifeCounter;
         private DefeatPanel _defeatPanel;
         private AdsRewardedButton _rewardedButton;
+        private RestartLevelButton _levelRestarter;
 
-        public QuadcopterFactory(QuadcopterConfig config, Container container, LifeDisplayer lifeCounter, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton)
+        public QuadcopterFactory(QuadcopterConfig config, Container container, LifeDisplayer lifeCounter, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton, RestartLevelButton levelRestarter)
             : base(config, container) 
         {
             _lifeCounter = lifeCounter;
             _defeatPanel = defeatPanel;
             _rewardedButton = rewardedButton;
+            _levelRestarter = levelRestarter;
         }
 
         public override Quadcopter GetCreated()
@@ -82,7 +84,6 @@ namespace Entities
                 swipeController.enabled = true;
                 new QuadcopterStartReaction(quadcopter).React();
             };
-            
 
             quadcopter.GetComponentInChildren<Camera>().transform.SetParent(_container.transform);
 
@@ -91,6 +92,9 @@ namespace Entities
                 lifer.Restore();
                 new QuadcopterNextReaction(quadcopter, _config).React();
             };
+
+            ResetQuadcopterReaction resetQuadcopter = new(quadcopter, lifer);
+            _levelRestarter.LevelRestarted += () => resetQuadcopter.React();
 
             return quadcopter;
         }
