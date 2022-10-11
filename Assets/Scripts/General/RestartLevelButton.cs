@@ -16,13 +16,11 @@ namespace UI
         private ChunkGenerator _chunkGenerator;
         private EntitySpawner _entitySpawner;
         private Button _tapToStartButton;
-        private DistanceService _distanceService;
 
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(RestartLevel);
             
-            _distanceService = FindObjectOfType<DistanceService>();
             _defeatPanel = FindObjectOfType<DefeatPanel>();
             _entitySpawner = FindObjectOfType<EntitySpawner>();
             _chunkGenerator = FindObjectOfType<ChunkGenerator>();
@@ -33,10 +31,12 @@ namespace UI
         public void RestartLevel()
         {
             GlobalSpeedService.Instance.enabled = false;
+            ScoreService.CheckRecord();
+            MoneyService.SetInitialAmount();
+            DistanceService.ResetDistance();
             _defeatPanel.gameObject.SetActive(false);
             _entitySpawner.ResetEntities();
             _chunkGenerator.ResetChunks();
-            _distanceService.ResetDistance();
             _tapToStartButton.enabled = true;
             _tapToStartButton.gameObject.SetActive(true);
             LevelRestarted?.Invoke();

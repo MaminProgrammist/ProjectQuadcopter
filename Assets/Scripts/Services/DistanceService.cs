@@ -7,11 +7,11 @@ namespace Services
     {
         public static Action<double> OnChanged;
 
-        private double _distance;
+        private static double _distance;
 
         private void OnEnable() => UpdateService.OnFixedUpdate += UpdateDistance;
         
-        public double Distance
+        public static double Distance
         {
             private set
             {
@@ -23,7 +23,7 @@ namespace Services
             get => _distance;
         }
 
-        public void ResetDistance() => Distance = 0;   
+        public static void ResetDistance() => Distance = 0;   
 
         private void UpdateDistance() => Distance += GlobalSpeedService.Speed * Time.fixedDeltaTime;
 
