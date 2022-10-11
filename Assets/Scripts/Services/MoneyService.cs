@@ -3,7 +3,7 @@ using System;
 
 namespace Services
 {
-    class MoneyService : MonoBehaviour
+    public class MoneyService : MonoBehaviour
     {
         public static event Action<int> OnChanged;
 
