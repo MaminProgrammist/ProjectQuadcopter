@@ -5,7 +5,6 @@ using Chunk;
 using Level;
 using Entities;
 using System.Collections;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace General
@@ -29,8 +28,8 @@ namespace General
 
         private void Start()
         {
-            Container chunkContainer = ContainerService.GetCreatedContainer("Chunks", _city.transform);
-            Container entityContainer = ContainerService.GetCreatedContainer("Entities", _city.transform);
+            Container chunkContainer = ContainerService.Instance.GetCreatedContainer("Chunks", _city.transform);
+            Container entityContainer = ContainerService.Instance.GetCreatedContainer("Entities", _city.transform);
             StartCoroutine(GameInitialization(entityContainer, chunkContainer));
         }
 

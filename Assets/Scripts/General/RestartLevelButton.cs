@@ -31,9 +31,9 @@ namespace UI
         public void RestartLevel()
         {
             GlobalSpeedService.Instance.enabled = false;
-            ScoreService.CheckRecord();
-            MoneyService.SetInitialAmount();
-            DistanceService.ResetDistance();
+            ScoreService.Instance.CheckRecord();
+            MoneyService.Instance.SetInitialAmount();
+            DistanceService.Instance.ResetDistance();
             _defeatPanel.gameObject.SetActive(false);
             _entitySpawner.ResetEntities();
             _chunkGenerator.ResetChunks();

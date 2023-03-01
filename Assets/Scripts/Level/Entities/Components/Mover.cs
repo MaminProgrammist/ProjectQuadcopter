@@ -14,7 +14,7 @@ namespace Components
         private void OnEnable()
         {
             _pushingSpeed = 0;
-            UpdateService.OnFixedUpdate += Move;
+            UpdateService.Instance.OnFixedUpdate += Move;
         }
 
         private void Move()
@@ -25,6 +25,6 @@ namespace Components
 
         public void Push(float pusherSpeed) => _pushingSpeed = pusherSpeed - SelfSpeed;
 
-        private void OnDisable() => UpdateService.OnFixedUpdate -= Move;
+        private void OnDisable() => UpdateService.Instance.OnFixedUpdate -= Move;
     }
 }

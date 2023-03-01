@@ -2,16 +2,17 @@
 using System.IO;
 using Other;
 using System;
+using Assets.Scripts.General;
 
 namespace Services
 {
-    public class DataService : MonoBehaviour
+    public class DataService : Singleton<DataService>
     {
-        private static string _dataFileName = "data.json";
-        private static string _dataFilePath;
-        private static SerializedData _data;
+        private string _dataFileName = "data.json";
+        private string _dataFilePath;
+        private SerializedData _data;
 
-        public static SerializedData Data 
+        public SerializedData Data 
         {
             get => _data;
 
@@ -21,18 +22,18 @@ namespace Services
             }
         }
 
-        private void Awake()
+        protected override void Init()
         {
             #if UNITY_ANDROID && !UNITY_EDITOR
                 _dataFilePath = Path.Combine(Application.persistentDataPath, _dataFileName);
             #else
-                _dataFilePath = Path.Combine(Application.dataPath, _dataFileName);
+            _dataFilePath = Path.Combine(Application.persistentDataPath, _dataFileName);
             #endif
 
             LoadDataFromFile();
         }
 
-        public static void LoadDataFromFile()
+        public void LoadDataFromFile()
         {
             if (File.Exists(_dataFilePath))
             {
@@ -52,13 +53,13 @@ namespace Services
             }
         }
 
-        public static void UpdateData(SerializedData newData)
+        public void UpdateData(SerializedData newData)
         {
             Data = newData;
             SaveDataToFile();
         }
 
-        public static void SaveDataToFile()
+        public void SaveDataToFile()
         {
             string dataAsJson = JsonUtility.ToJson(Data, true);
 

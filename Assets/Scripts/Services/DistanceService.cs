@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System;
+using Assets.Scripts.General;
 
 namespace Services
 {
-    public class DistanceService : MonoBehaviour
+    public class DistanceService : Singleton<DistanceService>
     {
-        public static Action<double> OnChanged;
+        public Action<double> OnChanged;
 
-        private static double _distance;
+        private double _distance;
 
-        private void OnEnable() => UpdateService.OnFixedUpdate += UpdateDistance;
+        private void OnEnable() => UpdateService.Instance.OnFixedUpdate += UpdateDistance;
         
-        public static double Distance
+        public double Distance
         {
             private set
             {
@@ -23,11 +24,11 @@ namespace Services
             get => _distance;
         }
 
-        public static void ResetDistance() => Distance = 0;   
+        public void ResetDistance() => Distance = 0;   
 
         private void UpdateDistance() => Distance += GlobalSpeedService.Speed * Time.fixedDeltaTime;
 
-        private void OnDisable() => UpdateService.OnFixedUpdate -= UpdateDistance;
+        private void OnDisable() => UpdateService.Instance.OnFixedUpdate -= UpdateDistance;
         
     }
 }

@@ -28,7 +28,7 @@ namespace Entities
         {
             Quadcopter quadcopter = Object.Instantiate(_config.Prefab, _container.transform);
 
-            MoneyService.SetInitialAmount();
+            MoneyService.Instance.SetInitialAmount();
 
             AudioSource audioSource = quadcopter.GetComponent<AudioSource>();
 
@@ -44,8 +44,8 @@ namespace Entities
 
             Deliverer deliverer = quadcopter.gameObject.AddComponent<Deliverer>();
             deliverer.Receive(_config);
-            deliverer.OnSuccessfulDelivery += () => MoneyService.AddMoney(_config.SuccessfulDeliveryReward);
-            deliverer.OnDeliverySequenceFailed += () => MoneyService.SubtractMoney(_config.FineForFailedDelivery);
+            deliverer.OnSuccessfulDelivery += () => MoneyService.Instance.AddMoney(_config.SuccessfulDeliveryReward);
+            deliverer.OnDeliverySequenceFailed += () => MoneyService.Instance.SubtractMoney(_config.FineForFailedDelivery);
 
             Pizza pizza = quadcopter.GetComponentInChildren<Pizza>();
             pizza.gameObject.SetActive(false);
