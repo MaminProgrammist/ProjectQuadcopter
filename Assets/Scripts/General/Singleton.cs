@@ -11,6 +11,7 @@ namespace Assets.Scripts.General
             if (Instance == null)
             {
                 Instance = this as T;
+                Instance.transform.SetParent(null);
                 DontDestroyOnLoad(this);
             }
             else
