@@ -21,8 +21,8 @@ namespace Reactions
 
         private void CalculateShoveOuteTime()
         {
-            float speed = GlobalSpeedService.Speed;
-            float acceleretion = GlobalSpeedService.Acceleration;
+            float speed = GlobalSpeedService.Instance.Speed;
+            float acceleretion = GlobalSpeedService.Instance.Acceleration;
             float time;
 
             time = (Mathf.Sqrt(speed * speed + 2 * acceleretion * _config.ZDetectionDistanceBackward * 0.5f) - speed) / acceleretion;

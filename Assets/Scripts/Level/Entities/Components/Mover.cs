@@ -19,8 +19,8 @@ namespace Components
 
         private void Move()
         {
-            if (GlobalSpeedService.Speed > 0)
-                transform.position += (GlobalSpeedService.Speed + SelfSpeed + _pushingSpeed) * Time.fixedDeltaTime * Vector3.back;
+            if (GlobalSpeedService.Instance.Speed > 0)
+                transform.position += (GlobalSpeedService.Instance.Speed + SelfSpeed + _pushingSpeed) * Time.fixedDeltaTime * Vector3.back;
         }
 
         public void Push(float pusherSpeed) => _pushingSpeed = pusherSpeed - SelfSpeed;

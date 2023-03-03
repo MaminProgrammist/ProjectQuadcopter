@@ -1,5 +1,6 @@
 using System;
 using Chunk;
+using Cinemachine;
 using Entities;
 using Services;
 using UnityEngine;
@@ -16,20 +17,21 @@ namespace UI
         private ChunkGenerator _chunkGenerator;
         private EntitySpawner _entitySpawner;
         private Button _tapToStartButton;
+        private CinemachineBrain _cameraBrain;
 
         private void Awake()
         {
+            _cameraBrain = Camera.main.GetComponent<CinemachineBrain>();
             GetComponent<Button>().onClick.AddListener(RestartLevel);
-            
             _defeatPanel = FindObjectOfType<DefeatPanel>();
             _entitySpawner = FindObjectOfType<EntitySpawner>();
             _chunkGenerator = FindObjectOfType<ChunkGenerator>();
             _tapToStartButton = FindObjectOfType<TapToStart>().GetComponent<Button>();
         }
 
-        //TODO add fade
         public void RestartLevel()
         {
+            _cameraBrain.enabled = false;
             GlobalSpeedService.Instance.enabled = false;
             ScoreService.Instance.CheckRecord();
             MoneyService.Instance.SetInitialAmount();
@@ -39,6 +41,7 @@ namespace UI
             _chunkGenerator.ResetChunks();
             _tapToStartButton.enabled = true;
             _tapToStartButton.gameObject.SetActive(true);
+            _cameraBrain.enabled = true;
             LevelRestarted?.Invoke();
         }
     }

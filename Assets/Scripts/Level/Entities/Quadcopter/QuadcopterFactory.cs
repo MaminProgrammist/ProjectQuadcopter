@@ -5,6 +5,7 @@ using Ads;
 using UI;
 using Components;
 using Reactions;
+using Cinemachine;
 
 namespace Entities
 {
@@ -79,13 +80,13 @@ namespace Entities
 
             quadcopter.AddReaction<CollisionDetector, Bird, Car, Weapon>(new TakeDamageReaction(quadcopter, _config, destroyParticle));
 
-            GlobalSpeedService.OnStartup += () =>
+            GlobalSpeedService.Instance.OnStartup += () =>
             {
                 swipeController.enabled = true;
                 new QuadcopterStartReaction(quadcopter).React();
             };
 
-            quadcopter.GetComponentInChildren<Camera>().transform.SetParent(_container.transform);
+            quadcopter.GetComponentInChildren<CinemachineVirtualCamera>().transform.SetParent(_container.transform);
 
             _rewardedButton.OnShowCompleted += () =>
             {

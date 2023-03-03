@@ -26,7 +26,7 @@ namespace Services
 
         public void ResetDistance() => Distance = 0;   
 
-        private void UpdateDistance() => Distance += GlobalSpeedService.Speed * Time.fixedDeltaTime;
+        private void UpdateDistance() => Distance += GlobalSpeedService.Instance.Speed * Time.fixedDeltaTime;
 
         private void OnDisable() => UpdateService.Instance.OnFixedUpdate -= UpdateDistance;
         

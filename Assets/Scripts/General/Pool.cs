@@ -9,6 +9,8 @@ namespace General
         private List<T> _elements;
         private Container _container;
 
+        public bool IsInitialized { get; private set; }
+
         public Pool(IFactory<T> factory, Container container, int amount)
         {
             _factory = factory;
@@ -17,6 +19,8 @@ namespace General
 
             for (int i = 0; i < amount; i++)
                 Create(false);
+
+            IsInitialized = true;
         }
 
         public T Get(Vector3 spawnPosition)
