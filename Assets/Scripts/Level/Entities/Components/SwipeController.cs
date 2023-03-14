@@ -6,6 +6,7 @@ using General;
 using Services;
 using Entities;
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace Components
 {
@@ -17,6 +18,7 @@ namespace Components
         private Vector2Int _currentPosition;
         private Animator _animator;
         private Dictionary<Vector2Int, string> _animations = new();
+        private bool _canMove = true;
 
         public Vector2Int CurrentPosition
         {
@@ -41,7 +43,11 @@ namespace Components
             _animations.Add(Vector2Int.right, AnimationService.States.RightStrafe);
         }
 
-        private void OnEnable() => SwipeHandler.OnSwipe += UpdatePosition;
+        private void OnEnable()
+        {
+            SwipeHandler.Instance.OnHorizontal += MoveHorizontal;
+            SwipeHandler.Instance.OnVertical += MoveVerticalAsync;
+        }
 
         public SwipeController SetStartablePosition(MatrixPosition position)
         {
@@ -50,6 +56,26 @@ namespace Components
         }
 
         public void SetPosition(MatrixPosition position) => _wayMatrix.GetPosition(position, out _currentPosition);
+
+        private void MoveHorizontal(int direction)
+        {
+            if (_canMove == false || direction == 0)
+                return;
+
+            UpdatePosition(new(direction, 0));
+        }
+
+        private async void MoveVerticalAsync(int direction)
+        {
+            if (_canMove == false || direction == 0)
+                return;
+
+            _canMove = false;
+            UpdatePosition(new(0, direction));
+            await UniTask.Delay(TimeSpan.FromSeconds(_config.VerticalSideHoldingDuration));
+            UpdatePosition(new(0, -direction));
+            _canMove = true;
+        }
 
         private void UpdatePosition(Vector2Int positionShift)
         {
@@ -60,6 +86,10 @@ namespace Components
             OnMove?.Invoke(updatedPosition);
         }
 
-        private void OnDisable() => SwipeHandler.OnSwipe -= UpdatePosition;
+        private void OnDisable()
+        {
+            SwipeHandler.Instance.OnHorizontal -= MoveHorizontal;
+            SwipeHandler.Instance.OnVertical -= MoveVerticalAsync;
+        }
     }
 }
