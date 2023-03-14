@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System;
+using Assets.Scripts.General;
 
 namespace Services
 {
-    public class MoneyService : MonoBehaviour
+    public class MoneyService : Singleton<MoneyService>
     {
-        public static event Action<int> OnChanged;
+        public event Action<int> OnChanged;
 
-        private static int _money;
+        private int _money;
 
-        public static int Money
+        public int Money
         {
             get => _money;
 
@@ -21,10 +22,10 @@ namespace Services
             }
         }
 
-        public static void AddMoney(int money) => Money += money;
+        public void AddMoney(int money) => Money += money;
 
-        public static void SubtractMoney(int money) => Money -= money;
+        public void SubtractMoney(int money) => Money -= money;
 
-        public static void SetInitialAmount() => Money = 0;
+        public void SetInitialAmount() => Money = 0;
     }
 }

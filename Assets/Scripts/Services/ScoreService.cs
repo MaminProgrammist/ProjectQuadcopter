@@ -1,13 +1,14 @@
 ﻿using System;
+using Assets.Scripts.General;
 using Other;
 using UnityEngine;
 
 namespace Services
 {
-    public class ScoreService : MonoBehaviour
+    public class ScoreService : Singleton<ScoreService>
     {
-        public static event Action OnDistanceNewRecord;
-        public static event Action OnMoneyNewRecord;
+        public event Action OnDistanceNewRecord;
+        public event Action OnMoneyNewRecord;
 
         private void OnEnable()
         {
@@ -20,26 +21,26 @@ namespace Services
             Debug.Log("POSOSI");
         }
 
-        public static void CheckRecord()
+        public void CheckRecord()
         {
-            SerializedData currentData = DataService.Data;
+            SerializedData currentData = DataService.Instance.Data;
             SerializedData updatedData = currentData;
 
-            if (MoneyService.Money > currentData.MoneyRecord)
+            if (MoneyService.Instance.Money > currentData.MoneyRecord)
             {
-                updatedData.MoneyRecord = MoneyService.Money;
+                updatedData.MoneyRecord = MoneyService.Instance.Money;
 
                 OnMoneyNewRecord?.Invoke();
             }
 
-            if (DistanceService.Distance > currentData.DistanceRecord)
+            if (DistanceService.Instance.Distance > currentData.DistanceRecord)
             {
-                updatedData.DistanceRecord = DistanceService.Distance;
+                updatedData.DistanceRecord = DistanceService.Instance.Distance;
 
                 OnDistanceNewRecord?.Invoke();
             }
 
-            DataService.UpdateData(updatedData);
+            DataService.Instance.UpdateData(updatedData);
         }
 
         private void OnDisable()

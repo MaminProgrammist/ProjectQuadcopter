@@ -1,13 +1,13 @@
+using Assets.Scripts.General;
 using System;
-using UnityEngine;
 
 namespace Services
 {
-    public sealed class UpdateService : MonoBehaviour
+    public sealed class UpdateService : Singleton<UpdateService>
     {
-        public static Action OnLateUpdate;
-        public static Action OnUpdate;
-        public static Action OnFixedUpdate;
+        public Action OnLateUpdate;
+        public Action OnUpdate;
+        public Action OnFixedUpdate;
 
         private void LateUpdate() => OnLateUpdate?.Invoke();
 

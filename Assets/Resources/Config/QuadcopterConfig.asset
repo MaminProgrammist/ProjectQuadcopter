@@ -25,3 +25,5 @@ MonoBehaviour:
   _poofParticle: {fileID: 19855650, guid: fe394d041df1a0547990f49cf653249f, type: 3}
   _destroyingParticle: {fileID: 19811046, guid: e6ea0c2b13012484ba2f5dc1054e6d75,
     type: 3}
+  _poofSound: {fileID: 8300000, guid: 96bbf34d7aee725449bb8a5f1a46bfbb, type: 3}
+  _destroyingSound: {fileID: 8300000, guid: 79c3cb7a26813d146b07c293b0324039, type: 3}

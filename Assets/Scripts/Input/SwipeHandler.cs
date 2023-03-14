@@ -1,3 +1,4 @@
+using Assets.Scripts.General;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -5,42 +6,43 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace Input
 {
-    public class SwipeHandler : MonoBehaviour
+    public class SwipeHandler : Singleton<SwipeHandler>
     {
-        public static event Action<Vector2Int> OnSwipe;
+        public event Action<int> OnHorizontal;
+        public event Action<int> OnVertical;
 
-        [SerializeField] [Range(0, 1000)] private int _deadZone;
-
-        public Vector2 StartContact { get; private set; }
-        public Vector2 EndContact { get; private set; }
+        [SerializeField, Range(0, 1000)] private int _deadZone = 30;
+        [SerializeField, Range(0, 1)] private float _threshold = 0.2f;
         
         private void OnEnable()
         {
             EnhancedTouchSupport.Enable();
-            Touch.onFingerDown += callbackContext => StartSwipe();
-            Touch.onFingerUp += callbackContext => EndSwipe();
+            Touch.onFingerUp += Swipe;
         }
 
-        private void StartSwipe() => StartContact = Touch.activeFingers[0].currentTouch.startScreenPosition;
-
-        private void EndSwipe()
+        private void Swipe(Finger finger)
         {
-            EndContact = Touch.activeFingers[0].currentTouch.screenPosition;
-            Vector2 swipeDirection = (EndContact - StartContact);
+            Vector2 swipeDirection = (finger.screenPosition - finger.currentTouch.startScreenPosition);
 
             if (swipeDirection.magnitude >= _deadZone)
             {
-                OnSwipe?.Invoke(CalculateDirection(swipeDirection.normalized));
+                Vector2Int direction = CalculateDirection(swipeDirection.normalized);
+                OnHorizontal?.Invoke(direction.x);
+                OnVertical?.Invoke(direction.y);
             }
         }
 
         private Vector2Int CalculateDirection(Vector2 normalizedSwipeDirection)
         {
-            int x = Mathf.RoundToInt(normalizedSwipeDirection.x - 0.2f * Mathf.Sign(normalizedSwipeDirection.x));
-            int y = Mathf.RoundToInt(normalizedSwipeDirection.y - 0.2f * Mathf.Sign(normalizedSwipeDirection.y));
+            int x = Mathf.RoundToInt(normalizedSwipeDirection.x - _threshold * Mathf.Sign(normalizedSwipeDirection.x));
+            int y = Mathf.RoundToInt(normalizedSwipeDirection.y - _threshold * Mathf.Sign(normalizedSwipeDirection.y));
             return new Vector2Int(x, y);
         }
 
-        private void OnDisable() => EnhancedTouchSupport.Disable();
+        private void OnDisable()
+        {
+            Touch.onFingerUp -= Swipe;
+            EnhancedTouchSupport.Disable();
+        }
     }
 }

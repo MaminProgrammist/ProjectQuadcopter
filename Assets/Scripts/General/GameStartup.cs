@@ -4,9 +4,9 @@ using UI;
 using Chunk;
 using Level;
 using Entities;
-using System.Collections;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace General
 {
@@ -27,23 +27,19 @@ namespace General
             _tapToStartButton = FindObjectOfType<TapToStart>().GetComponent<Button>();
         }
 
-        private void Start()
+        private async void Start()
         {
-            Container chunkContainer = ContainerService.GetCreatedContainer("Chunks", _city.transform);
-            Container entityContainer = ContainerService.GetCreatedContainer("Entities", _city.transform);
-            StartCoroutine(GameInitialization(entityContainer, chunkContainer));
-        }
-
-        private IEnumerator GameInitialization(Container entityContainer, Container chunkContainer)
-        {
+            Container chunkContainer = ContainerService.Instance.GetCreatedContainer("Chunks", _city.transform);
+            Container entityContainer = ContainerService.Instance.GetCreatedContainer("Entities", _city.transform);
             _tapToStartButton.enabled = false;
-            yield return new WaitUntil(() => _chunkGenerator.EnableChunks(chunkContainer));
-            yield return new WaitUntil(() => _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel, out Quadcopter quadcopter));
-            yield return new WaitUntil(() => _entitySpawner.EnableCarTraffic(entityContainer));
-            yield return new WaitUntil(() => _entitySpawner.EnableBirds(entityContainer));
-            yield return new WaitUntil(() => _entitySpawner.EnableNetGuys(entityContainer));
-            //yield return new WaitUntil(() => _entitySpawner.EnableBatteries(entityContainer));
-            yield return new WaitUntil(() => _entitySpawner.EnableDelivery(entityContainer, _chunkGenerator));
+            _chunkGenerator.EnableChunks(chunkContainer);
+            _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel, out Quadcopter quadcopter);
+            _entitySpawner.EnableCarTraffic(entityContainer);
+            _entitySpawner.EnableBirds(entityContainer);
+            _entitySpawner.EnableNetGuys(entityContainer);
+            //_entitySpawner.EnableBatteries(entityContainer);
+            _entitySpawner.EnableDelivery(entityContainer, _chunkGenerator);
+            await LoadingScreen.Instance.Hide();
             GlobalSpeedService.Instance.enabled = false;
             _defeatPanel.gameObject.SetActive(false);
             _tapToStartButton.enabled = true;

@@ -46,9 +46,9 @@ namespace Entities
         private void OnEnable()
         {
             _chunkGenerator.OnSpawnChunk += SettleWindows;
-            GlobalSpeedService.OnStartup += SpawnCars;
-            GlobalSpeedService.OnStartup += SpawnBirds;
-            GlobalSpeedService.OnStop += StopAllCoroutines;
+            GlobalSpeedService.Instance.OnStartup += SpawnCars;
+            GlobalSpeedService.Instance.OnStartup += SpawnBirds;
+            GlobalSpeedService.Instance.OnStop += StopAllCoroutines;
         }
 
         public void ResetEntities()
@@ -159,9 +159,12 @@ namespace Entities
                     if (car.CarColorChanger != null) car.CarColorChanger.ChangeColorRandom();
 
                     float distanceBetweenCars = Random.Range(minDistance, maxDistance);
-                    float speed = GlobalSpeedService.Speed + _carConfig.SelfSpeed;
+                    float speed = GlobalSpeedService.Instance.Speed + _carConfig.SelfSpeed;
                     float halfSize = car.Size / 2;
-                    delay = (Mathf.Sqrt(speed * speed + 2 * GlobalSpeedService.Acceleration * (distanceBetweenCars + halfSize + previousHalfSize)) - speed) / GlobalSpeedService.Acceleration;
+                    delay = (Mathf.Sqrt(speed * speed + 2
+                        * GlobalSpeedService.Instance.Acceleration
+                        * (distanceBetweenCars + halfSize + previousHalfSize))
+                        - speed) / GlobalSpeedService.Instance.Acceleration;
                     previousHalfSize = halfSize;
 
                     yield return new WaitForSeconds(delay);
@@ -194,9 +197,9 @@ namespace Entities
                 if (_birdsDensity > Random.Range(0, 100))
                 {
                     GetPool<Bird>().Get(position + Vector3.forward * _spawnDistance);
-                    float speed = GlobalSpeedService.Speed + _birdConfig.SelfSpeed;
+                    float speed = GlobalSpeedService.Instance.Speed + _birdConfig.SelfSpeed;
                     float distanceBetweenBirds = Random.Range(minDistance, maxDistance);
-                    float acceleration = GlobalSpeedService.Acceleration;
+                    float acceleration = GlobalSpeedService.Instance.Acceleration;
 
                     delay = (Mathf.Sqrt(speed * speed + 2 * acceleration * (distanceBetweenBirds)) - speed) / acceleration;
 
@@ -254,10 +257,10 @@ namespace Entities
         private void OnDisable()
         {
             _chunkGenerator.OnSpawnChunk -= SettleWindows;
-            _chunkGenerator.OnSpawnChunk += SettleWindows;
-            GlobalSpeedService.OnStartup += SpawnCars;
-            GlobalSpeedService.OnStartup += SpawnBirds;
-            GlobalSpeedService.OnStop += StopAllCoroutines;
+            _chunkGenerator.OnSpawnChunk -= SettleWindows;
+            GlobalSpeedService.Instance.OnStartup -= SpawnCars;
+            GlobalSpeedService.Instance.OnStartup -= SpawnBirds;
+            GlobalSpeedService.Instance.OnStop -= StopAllCoroutines;
             _deliverer.OnPizzeriaRequested -= _chunkGenerator.RequestPizzeria;
         }
     }

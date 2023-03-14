@@ -14,13 +14,13 @@ namespace Components
         private void OnEnable()
         {
             SetSpeedFactor();
-            UpdateService.OnUpdate += Rotate;
+            UpdateService.Instance.OnUpdate += Rotate;
         }
 
         private void SetSpeedFactor() => _speedFactor = new Vector3(Random.Range(0, _maxSpeedFactor), Random.Range(0, _maxSpeedFactor), Random.Range(0, _maxSpeedFactor));
 
         private void Rotate() => gameObject.transform.Rotate(Time.deltaTime * _config.RotationSpeed * _speedFactor);
 
-        private void OnDisable() => UpdateService.OnUpdate -= Rotate;
+        private void OnDisable() => UpdateService.Instance.OnUpdate -= Rotate;
     }
 }

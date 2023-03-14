@@ -6,12 +6,12 @@ namespace UI
     {
         private void OnEnable()
         {
-            DistanceService.OnChanged += Display;
+            DistanceService.Instance.OnChanged += Display;
         }
 
         private void OnDisable()
         {
-            DistanceService.OnChanged -= Display;
+            DistanceService.Instance.OnChanged -= Display;
         }
     }
 }

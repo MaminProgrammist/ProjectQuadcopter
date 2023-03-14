@@ -12,7 +12,7 @@ namespace Components
 
         private bool _isDetection = true;
 
-        private void OnEnable() => UpdateService.OnUpdate += Detect;
+        private void OnEnable() => UpdateService.Instance.OnUpdate += Detect;
 
         private void Detect()
         {
@@ -44,6 +44,6 @@ namespace Components
             return false;
         }
 
-        private void OnDisable() => UpdateService.OnUpdate -= Detect;
+        private void OnDisable() => UpdateService.Instance.OnUpdate -= Detect;
     }
 }
