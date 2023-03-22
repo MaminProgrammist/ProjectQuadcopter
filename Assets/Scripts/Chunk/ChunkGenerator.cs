@@ -33,7 +33,6 @@ namespace Chunk
             SpawnStartableChunks(chunksContainer, _startableChunksCount);
             _chunksContainer = chunksContainer;
             _isPizzeriaRequested = true;
-            Debug.Log("Chunks enabled");
             return true;
         }
 
