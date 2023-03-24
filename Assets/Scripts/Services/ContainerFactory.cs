@@ -4,9 +4,9 @@ using Assets.Scripts.General;
 
 namespace Services
 {
-    public class ContainerService : Singleton<ContainerService>
+    public class ContainerFactory : Singleton<ContainerFactory>
     {
-        public Container GetCreatedContainer(string title, Transform parent)
+        public Container GetCreated(string title, Transform parent)
         {
             GameObject container = new GameObject(title);
             container.transform.SetParent(parent);
@@ -14,7 +14,7 @@ namespace Services
             return container.AddComponent<Container>();
         }
 
-        public Container GetCreatedContainer(string title, Transform parent, Vector3 position)
+        public Container GetCreated(string title, Transform parent, Vector3 position)
         {
             GameObject container = new GameObject(title);
             container.transform.SetParent(parent);

@@ -34,7 +34,7 @@ namespace Reactions
 
         public override void React()
         {
-            GlobalSpeedService.Instance.enabled = false;
+            GlobalSpeed.Instance.enabled = false;
             _swipeController.enabled = false;
             _lifer.TakeDamage();
 
@@ -57,7 +57,7 @@ namespace Reactions
 
             yield return new WaitForSeconds(1);
             _nextReaction.React();
-            GlobalSpeedService.Instance.enabled = true;
+            GlobalSpeed.Instance.enabled = true;
             yield break;
 
         }

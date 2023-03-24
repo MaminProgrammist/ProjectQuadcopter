@@ -7,12 +7,12 @@ namespace Reactions
 {
     public class ShoveOutReaction : Reaction
     {
-        private Guy _netGuy;
+        private WindowGuy _netGuy;
         private GuyConfig _config;
         private Animator _animator;
         private float _shoveOutSpeed;
 
-        public ShoveOutReaction(Guy netGuy, GuyConfig config)
+        public ShoveOutReaction(WindowGuy netGuy, GuyConfig config)
         {
             _netGuy = netGuy;
             _config = config;
@@ -21,8 +21,8 @@ namespace Reactions
 
         private void CalculateShoveOuteTime()
         {
-            float speed = GlobalSpeedService.Instance.Speed;
-            float acceleretion = GlobalSpeedService.Instance.Acceleration;
+            float speed = GlobalSpeed.Instance.Value;
+            float acceleretion = GlobalSpeed.Instance.Acceleration;
             float time;
 
             time = (Mathf.Sqrt(speed * speed + 2 * acceleretion * _config.ZDetectionDistanceBackward * 0.5f) - speed) / acceleretion;

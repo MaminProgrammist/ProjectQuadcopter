@@ -10,22 +10,12 @@ using Chunk;
 using UI;
 using Components;
 using Random = UnityEngine.Random;
-using System.Threading;
-using System.Threading.Tasks;
+using Level;
 
 namespace Entities
 {
     public class EntitySpawner : MonoBehaviour
     {
-        private Dictionary<Type, IPool> _pools = new();
-        private readonly WayMatrix _wayMatrix = new();
-        private ChunkGenerator _chunkGenerator;
-        private Quadcopter _quadcopter;
-        private bool _isClientRequested;
-        private Deliverer _deliverer;
-        private Pizza _pizza;
-        private PizzaEjector _pizzaEjector;
-
         [SerializeField, BoxGroup("Configurations")] private QuadcopterConfig _quadcopterConfig;
         [SerializeField, BoxGroup("Configurations")] private BirdConfig _birdConfig;
         [SerializeField, BoxGroup("Configurations")] private CarConfig _carConfig;
@@ -34,21 +24,32 @@ namespace Entities
         [SerializeField, BoxGroup("Configurations")] private ClientConfig _clientConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaEjectorConfig _pizzaEjectorConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaConfig _pizzaConfig;
-
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _birdsDensity;
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _carsDensity;
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _netGuysDensity;
-
-        [SerializeField][Range(0, 1000)] private int _spawnDistance;
+        [SerializeField, Range(0, 1000)] private int _spawnDistance;
+        private readonly WayMatrix _wayMatrix = new();
+        private ChunkGenerator _chunkGenerator;
+        private Quadcopter _quadcopter;
+        private bool _isClientRequested;
+        private Deliverer _deliverer;
+        private Pizza _pizza;
+        private PizzaEjector _pizzaEjector;
+        private bool _isPizzaRequested;
+        private Pool<Car> _carPool;
+        private Pool<Bird> _birdPool;
+        private Pool<WindowGuy> _windowGuyPool;
+        private Pool<Battery> _batteryPool;
+        private Pool<Client> _clientPool;
 
         private void Awake() => _chunkGenerator = FindObjectOfType<ChunkGenerator>();
 
         private void OnEnable()
         {
-            _chunkGenerator.OnSpawnChunk += SettleWindows;
-            GlobalSpeedService.Instance.OnStartup += SpawnCars;
-            GlobalSpeedService.Instance.OnStartup += SpawnBirds;
-            GlobalSpeedService.Instance.OnStop += StopAllCoroutines;
+            _chunkGenerator.OnChunkSpawned += OnChunkSpawned;
+            GlobalSpeed.Instance.OnStartup += SpawnCars;
+            GlobalSpeed.Instance.OnStartup += SpawnBirds;
+            GlobalSpeed.Instance.OnStop += StopAllCoroutines;
         }
 
         public void ResetEntities()
@@ -56,13 +57,15 @@ namespace Entities
             DispawnAll();
         }
 
+        public void RequestPizza() => _isPizzaRequested = true;
+
         private void DispawnAll()
         {
-            Entity[] entities = FindObjectsOfType<Entity>();
-            for (int i = 0; i < entities.Length; i++)
-            {
-                entities[i].gameObject.SetActive(false);
-            }
+            _carPool?.ReleaseAll();
+            _birdPool?.ReleaseAll();
+            _windowGuyPool?.ReleaseAll();
+            _batteryPool?.ReleaseAll();
+            _clientPool?.ReleaseAll();
             _quadcopter.gameObject.SetActive(true);
         }
 
@@ -72,7 +75,9 @@ namespace Entities
             AdsRewardedButton rewardedButton = FindObjectOfType<AdsRewardedButton>();
             RestartLevelButton levelRestarter = FindObjectOfType<RestartLevelButton>(); 
 
-            _quadcopter = GetCreatedEntity(new QuadcopterFactory(_quadcopterConfig, entityContainer, lifeCounter, defeatPanel, rewardedButton, levelRestarter));
+            _quadcopter = new QuadcopterFactory(_quadcopterConfig, entityContainer,
+                lifeCounter, defeatPanel, rewardedButton, levelRestarter).GetCreated();
+
             _deliverer = _quadcopter.GetComponent<Deliverer>();
             quadcopter = _quadcopter;
             return true;
@@ -80,32 +85,32 @@ namespace Entities
 
         public bool EnableCarTraffic(Container entityContainer)
         {
-            _pools[typeof(Car)] = new Pool<Car>(new CarFactory(_carConfig), entityContainer, 10);
+            _carPool = new Pool<Car>(new CarFactory(_carConfig), entityContainer, 10);
             return true;
         }
 
         public bool EnableBirds(Container entityContainer)
         {
-            _pools[typeof(Bird)] = new Pool<Bird>(new BirdFactory(_birdConfig), entityContainer, 10);
+            _birdPool = new Pool<Bird>(new BirdFactory(_birdConfig), entityContainer, 10);
             return true;
         }
 
-        public bool EnableNetGuys(Container entityContainer)
+        public bool EnableWindowGuys(Container entityContainer)
         {
-            _pools[typeof(Guy)] = new Pool<Guy>(new GuyFactory(_guyConfig), entityContainer, 10);
+            _windowGuyPool = new Pool<WindowGuy>(new WindowGuyFactory(_guyConfig), entityContainer, 10);
             return true;
         }
 
         public bool EnableBatteries(Container entityContainer)
         {
-            _pools[typeof(Battery)] = new Pool<Battery>(new BatteryFactory(_batteryConfig), entityContainer, 3);
+            _batteryPool = new Pool<Battery>(new BatteryFactory(_batteryConfig), entityContainer, 3);
             _quadcopter.GetComponent<Charger>().OnDecreased += SpawnBattery;
             return true;
         }
 
         public bool EnableDelivery(Container entityContainer, ChunkGenerator chunkGenerator)
         {
-            _deliverer.OnPizzeriaRequested += _chunkGenerator.RequestPizzeria;
+            _deliverer.OnPizzeriaRequested += RequestPizza;
             EnablePizza(entityContainer);
             EnablePizzaGuy(entityContainer, chunkGenerator);
             EnableClient(entityContainer);
@@ -122,23 +127,23 @@ namespace Entities
         {
             _pizzaEjector = new PizzaEjectorFactory(_pizzaEjectorConfig, _deliverer, _pizza).GetCreated();
             _pizzaEjector.transform.SetParent(entityContainer.transform);
-            chunkGenerator.OnPizzeriaSpawned += SpawnPizzaGuy;
+            //chunkGenerator.OnPizzeriaSpawned += SpawnPizzaGuy;
         }
 
         private void EnableClient(Container entityContainer)
         {
-            _pools[typeof(Client)] = new Pool<Client>(new ClientFactory(_clientConfig, _deliverer), entityContainer, 10);
+            _clientPool = new Pool<Client>(new ClientFactory(_clientConfig, _deliverer), entityContainer, 10);
             _deliverer.OnPizzaGrabbed += () => _isClientRequested = true;
             _deliverer.OnDeliverySequenceFailed += () => _isClientRequested = false;
         }
 
-        private void SpawnPizzaGuy(PizzaDispensePoint dispensePoint)
-        {
-            PizzaEjector pizzaEjector = _pizzaEjector;
-            pizzaEjector.gameObject.SetActive(true);
-            pizzaEjector.transform.position = (dispensePoint.transform.position);
-            pizzaEjector.transform.eulerAngles = Vector3.up * (pizzaEjector.transform.position.x < 0 ? 180 : 0);
-        }
+        //private void SpawnPizzaGuy(PizzaDispensePoint dispensePoint)
+        //{
+        //    PizzaEjector pizzaEjector = _pizzaEjector;
+        //    pizzaEjector.gameObject.SetActive(true);
+        //    pizzaEjector.transform.position = (dispensePoint.transform.position);
+        //    pizzaEjector.transform.eulerAngles = Vector3.up * (pizzaEjector.transform.position.x < 0 ? 180 : 0);
+        //}
 
         private IEnumerator CarSpawning(int line)
         {
@@ -155,16 +160,16 @@ namespace Entities
             {
                 if (_carsDensity > Random.Range(0, 100))
                 {
-                    Car car = GetPool<Car>().Get(instancePosition);
+                    Car car = _carPool.Get(instancePosition);
                     if (car.CarColorChanger != null) car.CarColorChanger.ChangeColorRandom();
 
                     float distanceBetweenCars = Random.Range(minDistance, maxDistance);
-                    float speed = GlobalSpeedService.Instance.Speed + _carConfig.SelfSpeed;
+                    float speed = GlobalSpeed.Instance.Value + _carConfig.SelfSpeed;
                     float halfSize = car.Size / 2;
                     delay = (Mathf.Sqrt(speed * speed + 2
-                        * GlobalSpeedService.Instance.Acceleration
+                        * GlobalSpeed.Instance.Acceleration
                         * (distanceBetweenCars + halfSize + previousHalfSize))
-                        - speed) / GlobalSpeedService.Instance.Acceleration;
+                        - speed) / GlobalSpeed.Instance.Acceleration;
                     previousHalfSize = halfSize;
 
                     yield return new WaitForSeconds(delay);
@@ -177,7 +182,7 @@ namespace Entities
 
         public void SpawnCars()
         {
-            if (IsEnabled<Car>())
+            if (_carPool != null)
             {
                 for (int line = 0; line < WayMatrix.Width; line++)
                     StartCoroutine(CarSpawning(line));
@@ -196,10 +201,10 @@ namespace Entities
 
                 if (_birdsDensity > Random.Range(0, 100))
                 {
-                    GetPool<Bird>().Get(position + Vector3.forward * _spawnDistance);
-                    float speed = GlobalSpeedService.Instance.Speed + _birdConfig.SelfSpeed;
+                    _birdPool.Get(position + Vector3.forward * _spawnDistance);
+                    float speed = GlobalSpeed.Instance.Value + _birdConfig.SelfSpeed;
                     float distanceBetweenBirds = Random.Range(minDistance, maxDistance);
-                    float acceleration = GlobalSpeedService.Instance.Acceleration;
+                    float acceleration = GlobalSpeed.Instance.Acceleration;
 
                     delay = (Mathf.Sqrt(speed * speed + 2 * acceleration * (distanceBetweenBirds)) - speed) / acceleration;
 
@@ -212,7 +217,7 @@ namespace Entities
 
         public void SpawnBirds()
         {
-            if (IsEnabled<Bird>())
+            if (_birdPool != null)
             {
                 for (int row = 0; row < 2; row++)
                     for (int i = 0; i < WayMatrix.Width; i++)
@@ -220,8 +225,13 @@ namespace Entities
             } 
         }
 
-        private void SettleWindows(IEnumerable<Window> windows)
+        private void OnChunkSpawned(IEnumerable<Window> windows)
         {
+            if (_isPizzaRequested)
+            {
+                //Spawn pizza car
+            }
+
             foreach (Window window in windows)
             {
                 if (Random.Range(0, 100) > _netGuysDensity)
@@ -230,14 +240,16 @@ namespace Entities
                     continue;
                 }
 
-                if (IsEnabled<Client>() && _isClientRequested)
+                if (_clientPool != null && _isClientRequested)
                 {
-                    Client client = GetPool<Client>().Get(window.GetSpawnPoint());
+                    Client client = _clientPool.Get(window.GetSpawnPoint());
                     client.GetComponentInChildren<Animator>().SetFloat(AnimationService.Parameters.Side, Mathf.Clamp(client.transform.position.x, -1, 1));
                     _isClientRequested = false;
                 }
-                else if (IsEnabled<Guy>())
-                    GetPool<Guy>().Get(window.GetSpawnPoint());
+                else
+                {
+                    _windowGuyPool?.Get(window.GetSpawnPoint());
+                }
 
                 window.Open();
             }
@@ -245,23 +257,20 @@ namespace Entities
 
         private void SpawnBattery()
         {
-            GetPool<Battery>().Get(_wayMatrix.GetRandomPosition() + Vector3.forward * WayMatrix.Horizon);
+            if (_batteryPool != null)
+            {
+                _batteryPool.Get(_wayMatrix.GetRandomPosition() + Vector3.forward * WayMatrix.Horizon);
+            }
         }
-
-        public Pool<T> GetPool<T>() where T : Entity => _pools[typeof(T)] as Pool<T>;
-
-        public bool IsEnabled<T>() where T : Entity => _pools.ContainsKey(typeof(T));
-
-        private E GetCreatedEntity<E>(IFactory<E> entityFactory) where E : Entity => entityFactory.GetCreated();
 
         private void OnDisable()
         {
-            _chunkGenerator.OnSpawnChunk -= SettleWindows;
-            _chunkGenerator.OnSpawnChunk -= SettleWindows;
-            GlobalSpeedService.Instance.OnStartup -= SpawnCars;
-            GlobalSpeedService.Instance.OnStartup -= SpawnBirds;
-            GlobalSpeedService.Instance.OnStop -= StopAllCoroutines;
-            _deliverer.OnPizzeriaRequested -= _chunkGenerator.RequestPizzeria;
+            _chunkGenerator.OnChunkSpawned -= OnChunkSpawned;
+            _chunkGenerator.OnChunkSpawned -= OnChunkSpawned;
+            GlobalSpeed.Instance.OnStartup -= SpawnCars;
+            GlobalSpeed.Instance.OnStartup -= SpawnBirds;
+            GlobalSpeed.Instance.OnStop -= StopAllCoroutines;
+            _deliverer.OnPizzeriaRequested -= RequestPizza;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Ads
 
                 case UnityAdsShowCompletionState.COMPLETED:
                     Advertisement.Load(AdsInitializer.RewardedVideo, this);
-                    GlobalSpeedService.Instance.enabled = true;
+                    GlobalSpeed.Instance.enabled = true;
                     OnShowCompleted?.Invoke();
                     break;
 

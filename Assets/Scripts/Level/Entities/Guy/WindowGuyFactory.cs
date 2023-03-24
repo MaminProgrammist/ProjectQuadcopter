@@ -5,13 +5,13 @@ using Reactions;
 
 namespace Entities
 {
-    class GuyFactory : EntityFactory<Guy, GuyConfig>
+    class WindowGuyFactory : EntityFactory<WindowGuy, GuyConfig>
     {
-        public GuyFactory(GuyConfig config) : base(config) { }
+        public WindowGuyFactory(GuyConfig config) : base(config) { }
 
-        public override Guy GetCreated()
+        public override WindowGuy GetCreated()
         {
-            Guy guy = Object.Instantiate(_config.GuyPrefab);
+            WindowGuy guy = Object.Instantiate(_config.GuyPrefab);
             Animator animator =  guy.GetComponentInChildren<Animator>();
             animator.keepAnimatorControllerStateOnDisable = true;
 

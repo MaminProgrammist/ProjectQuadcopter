@@ -7,11 +7,11 @@ namespace Reactions
 {
     public class NetCatchingReaction : Reaction
     {
-        private Guy _netGuy;
+        private WindowGuy _netGuy;
         private Animator _animator;
         private float _shoveInSpeed;
 
-        public NetCatchingReaction(Guy netGuy, float ShoveInSpeed)
+        public NetCatchingReaction(WindowGuy netGuy, float ShoveInSpeed)
         {
             _netGuy = netGuy;
             _animator = netGuy.GetComponent<Animator>();

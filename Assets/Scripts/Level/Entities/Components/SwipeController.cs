@@ -46,8 +46,8 @@ namespace Components
 
         private void OnEnable()
         {
-            SwipeHandler.Instance.OnHorizontal += MoveHorizontal;
-            SwipeHandler.Instance.OnVertical += MoveVertical;
+            PlayerInput.Instance.OnHorizontal += MoveHorizontal;
+            PlayerInput.Instance.OnVertical += MoveVertical;
         }
 
         private void MoveVertical(int direction) => StartCoroutine(VerticalMotion(direction));
@@ -91,8 +91,8 @@ namespace Components
 
         private void OnDisable()
         {
-            SwipeHandler.Instance.OnHorizontal -= MoveHorizontal;
-            SwipeHandler.Instance.OnVertical -= MoveVertical;
+            PlayerInput.Instance.OnHorizontal -= MoveHorizontal;
+            PlayerInput.Instance.OnVertical -= MoveVertical;
         }
     }
 }

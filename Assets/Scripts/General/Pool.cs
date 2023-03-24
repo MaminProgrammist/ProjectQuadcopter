@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace General
 {
-    public class Pool<T> : IPool where T : MonoBehaviour
+    public class Pool<T> : IPool<T> where T : MonoBehaviour
     {
         private IFactory<T> _factory;
         private List<T> _elements;
@@ -34,6 +35,13 @@ namespace General
             T createdElement = Create(true);
             createdElement.transform.position = spawnPosition;
             return createdElement;
+        }
+
+        public void ReleaseAll()
+        {
+            _elements
+                .Where(element => element.gameObject.activeSelf == true).ToList()
+                .ForEach(element => element.gameObject.SetActive(false));
         }
 
         private bool HasAvailable(out T availableElement)

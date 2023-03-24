@@ -6,7 +6,7 @@ using Level;
 using Entities;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using UnityEngine.SceneManagement;
+using Reactions;
 
 namespace General
 {
@@ -17,32 +17,29 @@ namespace General
         private DefeatPanel _defeatPanel;
         private ChunkGenerator _chunkGenerator;
         private EntitySpawner _entitySpawner;
-        private Button _tapToStartButton;
 
         private void Awake()
         {
             _defeatPanel = FindObjectOfType<DefeatPanel>();
             _entitySpawner = GetComponentInChildren<EntitySpawner>();
             _chunkGenerator = GetComponentInChildren<ChunkGenerator>();
-            _tapToStartButton = FindObjectOfType<TapToStart>().GetComponent<Button>();
         }
 
         private async void Start()
         {
-            Container chunkContainer = ContainerService.Instance.GetCreatedContainer("Chunks", _city.transform);
-            Container entityContainer = ContainerService.Instance.GetCreatedContainer("Entities", _city.transform);
-            _tapToStartButton.enabled = false;
+            Container chunkContainer = ContainerFactory.Instance.GetCreated("Chunks", _city.transform);
+            Container entityContainer = ContainerFactory.Instance.GetCreated("Entities", _city.transform);
+            GlobalSpeed.Instance.enabled = false;
             _chunkGenerator.EnableChunks(chunkContainer);
             _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel, out Quadcopter quadcopter);
             _entitySpawner.EnableCarTraffic(entityContainer);
             _entitySpawner.EnableBirds(entityContainer);
-            _entitySpawner.EnableNetGuys(entityContainer);
+            //_entitySpawner.EnableWindowGuys(entityContainer);
             //_entitySpawner.EnableBatteries(entityContainer);
-            _entitySpawner.EnableDelivery(entityContainer, _chunkGenerator);
+            //_entitySpawner.EnableDelivery(entityContainer, _chunkGenerator);
             await LoadingScreen.Instance.Hide();
-            GlobalSpeedService.Instance.enabled = false;
             _defeatPanel.gameObject.SetActive(false);
-            _tapToStartButton.enabled = true;
+            new QuadcopterStartReaction(quadcopter).React();
         }
     }
 }

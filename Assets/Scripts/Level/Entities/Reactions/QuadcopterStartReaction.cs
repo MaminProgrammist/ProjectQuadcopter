@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using General;
 using Services;
 using Entities;
@@ -22,6 +21,8 @@ namespace Reactions
         {
             _swipeController.SetPosition(MatrixPosition.Center);
             _animator.SetTrigger(AnimationService.States.Start);
+            GlobalSpeed.Instance.enabled = true;
+            _swipeController.enabled = true;
         }
     }
 }

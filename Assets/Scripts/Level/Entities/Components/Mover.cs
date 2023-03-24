@@ -14,17 +14,17 @@ namespace Components
         private void OnEnable()
         {
             _pushingSpeed = 0;
-            UpdateService.Instance.OnFixedUpdate += Move;
+            Updater.Instance.OnFixedUpdate += Move;
         }
 
         private void Move()
         {
-            if (GlobalSpeedService.Instance.Speed > 0)
-                transform.position += (GlobalSpeedService.Instance.Speed + SelfSpeed + _pushingSpeed) * Time.fixedDeltaTime * Vector3.back;
+            if (GlobalSpeed.Instance.Value > 0)
+                transform.position += (GlobalSpeed.Instance.Value + SelfSpeed + _pushingSpeed) * Time.fixedDeltaTime * Vector3.back;
         }
 
         public void Push(float pusherSpeed) => _pushingSpeed = pusherSpeed - SelfSpeed;
 
-        private void OnDisable() => UpdateService.Instance.OnFixedUpdate -= Move;
+        private void OnDisable() => Updater.Instance.OnFixedUpdate -= Move;
     }
 }

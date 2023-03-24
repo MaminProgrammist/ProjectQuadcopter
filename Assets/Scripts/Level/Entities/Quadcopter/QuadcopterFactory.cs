@@ -29,7 +29,7 @@ namespace Entities
         {
             Quadcopter quadcopter = Object.Instantiate(_config.Prefab, _container.transform);
 
-            MoneyService.Instance.SetInitialAmount();
+            Money.Instance.SetInitialAmount();
 
             AudioSource audioSource = quadcopter.GetComponent<AudioSource>();
 
@@ -45,8 +45,8 @@ namespace Entities
 
             Deliverer deliverer = quadcopter.gameObject.AddComponent<Deliverer>();
             deliverer.Receive(_config);
-            deliverer.OnSuccessfulDelivery += () => MoneyService.Instance.AddMoney(_config.SuccessfulDeliveryReward);
-            deliverer.OnDeliverySequenceFailed += () => MoneyService.Instance.SubtractMoney(_config.FineForFailedDelivery);
+            deliverer.OnSuccessfulDelivery += () => Money.Instance.Add(_config.SuccessfulDeliveryReward);
+            deliverer.OnDeliverySequenceFailed += () => Money.Instance.Spend(_config.FineForFailedDelivery);
 
             Pizza pizza = quadcopter.GetComponentInChildren<Pizza>();
             pizza.gameObject.SetActive(false);
@@ -79,12 +79,6 @@ namespace Entities
             };
 
             quadcopter.AddReaction<CollisionDetector, Bird, Car, Weapon>(new TakeDamageReaction(quadcopter, _config, destroyParticle));
-
-            GlobalSpeedService.Instance.OnStartup += () =>
-            {
-                swipeController.enabled = true;
-                new QuadcopterStartReaction(quadcopter).React();
-            };
 
             quadcopter.GetComponentInChildren<CinemachineVirtualCamera>().transform.SetParent(_container.transform);
 

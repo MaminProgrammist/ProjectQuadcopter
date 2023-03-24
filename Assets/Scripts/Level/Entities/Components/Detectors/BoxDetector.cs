@@ -18,7 +18,7 @@ namespace Components
 
         private void OnEnable()
         {
-            UpdateService.Instance.OnUpdate += Detect;
+            Updater.Instance.OnUpdate += Detect;
             _target = FindObjectOfType<Quadcopter>();
         }
 
@@ -87,6 +87,6 @@ namespace Components
             }
         }
 
-        private void OnDisable() => UpdateService.Instance.OnUpdate -= Detect;
+        private void OnDisable() => Updater.Instance.OnUpdate -= Detect;
     }
 }

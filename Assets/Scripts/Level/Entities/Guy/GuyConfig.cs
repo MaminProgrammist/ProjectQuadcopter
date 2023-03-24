@@ -7,7 +7,7 @@ namespace Entities
     [CreateAssetMenu(menuName = "Config/Guy", fileName = "New Guy Config")]
     public class GuyConfig : Config, ICanMove, ICanDetect
     {
-        [SerializeField] private Guy[] _guyPrefabs;
+        [SerializeField] private WindowGuy[] _guyPrefabs;
         [SerializeField] private Weapon[] _weaponPrefabs;
         [SerializeField, Range(0, 10)] private float _shoveOutSpeed;
         [SerializeField, Range(0, 10)] private float _shoveInSpeed;
@@ -17,7 +17,7 @@ namespace Entities
 
         private MultiplePrefabGetter _weaponPrefabGetter;
 
-        public Guy GuyPrefab => _prefabGetter.Get(_guyPrefabs);
+        public WindowGuy GuyPrefab => _prefabGetter.Get(_guyPrefabs);
         public Weapon WeaponPrefab => _weaponPrefabGetter.Get(_weaponPrefabs);
         public float SelfSpeed => 0;
         public float ShoveOutSpeed => _shoveOutSpeed;

@@ -12,6 +12,6 @@ public class Bootstrap : MonoBehaviour
     {
         await LoadingScreen.Instance.Show();
         IProgress<float> progress = Progress.Create<float>(LoadingScreen.Instance.SetProgress);
-        await SceneManager.LoadSceneAsync(_gameplayScene, LoadSceneMode.Additive).ToUniTask(progress);
+        await SceneManager.LoadSceneAsync(_gameplayScene, LoadSceneMode.Single).ToUniTask(progress);
     }
 }

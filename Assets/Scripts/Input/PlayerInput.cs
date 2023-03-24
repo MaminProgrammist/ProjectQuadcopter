@@ -6,10 +6,11 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace Input
 {
-    public class SwipeHandler : Singleton<SwipeHandler>
+    public class PlayerInput : Singleton<PlayerInput>
     {
         public event Action<int> OnHorizontal;
         public event Action<int> OnVertical;
+        public event Action OnTap;
 
         [SerializeField, Range(0, 1000)] private int _deadZone = 30;
         [SerializeField, Range(0, 1)] private float _threshold = 0.2f;
@@ -29,6 +30,11 @@ namespace Input
                 Vector2Int direction = CalculateDirection(swipeDirection.normalized);
                 OnHorizontal?.Invoke(direction.x);
                 OnVertical?.Invoke(direction.y);
+            }
+
+            if (finger.currentTouch.isTap)
+            {
+                OnTap?.Invoke();
             }
         }
 

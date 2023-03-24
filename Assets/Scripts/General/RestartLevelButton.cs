@@ -16,7 +16,6 @@ namespace UI
         private DefeatPanel _defeatPanel;
         private ChunkGenerator _chunkGenerator;
         private EntitySpawner _entitySpawner;
-        private Button _tapToStartButton;
         private CinemachineBrain _cameraBrain;
 
         private void Awake()
@@ -26,21 +25,18 @@ namespace UI
             _defeatPanel = FindObjectOfType<DefeatPanel>();
             _entitySpawner = FindObjectOfType<EntitySpawner>();
             _chunkGenerator = FindObjectOfType<ChunkGenerator>();
-            _tapToStartButton = FindObjectOfType<TapToStart>().GetComponent<Button>();
         }
 
         public void RestartLevel()
         {
             _cameraBrain.enabled = false;
-            GlobalSpeedService.Instance.enabled = false;
-            ScoreService.Instance.CheckRecord();
-            MoneyService.Instance.SetInitialAmount();
-            DistanceService.Instance.ResetDistance();
+            GlobalSpeed.Instance.enabled = false;
+            ScoreCounter.Instance.CheckRecord();
+            Money.Instance.SetInitialAmount();
+            Distance.Instance.ResetValue();
             _defeatPanel.gameObject.SetActive(false);
             _entitySpawner.ResetEntities();
             _chunkGenerator.ResetChunks();
-            _tapToStartButton.enabled = true;
-            _tapToStartButton.gameObject.SetActive(true);
             _cameraBrain.enabled = true;
             LevelRestarted?.Invoke();
         }

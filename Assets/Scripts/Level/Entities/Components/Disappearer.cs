@@ -11,7 +11,7 @@ namespace Components
 
         private WayMatrix _wayMatrix = new();
 
-        private void OnEnable() => UpdateService.Instance.OnUpdate += CheckEdgeOut;
+        private void OnEnable() => Updater.Instance.OnUpdate += CheckEdgeOut;
 
         private void CheckEdgeOut()
         {
@@ -22,6 +22,6 @@ namespace Components
             }
         }
 
-        private void OnDisable() => UpdateService.Instance.OnUpdate -= CheckEdgeOut;
+        private void OnDisable() => Updater.Instance.OnUpdate -= CheckEdgeOut;
     }
 }

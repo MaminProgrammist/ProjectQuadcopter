@@ -6,21 +6,12 @@ using Assets.Scripts.General;
 
 namespace Services
 {
-    public class DataService : Singleton<DataService>
+    public class Storage : Singleton<Storage>
     {
         private string _dataFileName = "data.json";
         private string _dataFilePath;
-        private SerializedData _data;
 
-        public SerializedData Data 
-        {
-            get => _data;
-
-            private set
-            {
-                _data = value;
-            }
-        }
+        public SerializedData Data { get; private set; }
 
         protected override void Init()
         {

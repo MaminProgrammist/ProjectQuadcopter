@@ -32,7 +32,7 @@ namespace Components
             for (int i = 0; i < _netPoints.Count; i++)
             {
                 Weapon net = Instantiate(_config.WeaponPrefab, _netPoints[i].transform);
-                net.AddReaction<CollisionDetector, Quadcopter>(new CatchReaction(GetComponent<Guy>(), config));
+                net.AddReaction<CollisionDetector, Quadcopter>(new CatchReaction(GetComponent<WindowGuy>(), config));
                 _nets.Add(net);
             }
         }   

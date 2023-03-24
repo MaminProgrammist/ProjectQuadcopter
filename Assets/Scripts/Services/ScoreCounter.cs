@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Services
 {
-    public class ScoreService : Singleton<ScoreService>
+    public class ScoreCounter : Singleton<ScoreCounter>
     {
         public event Action OnDistanceNewRecord;
         public event Action OnMoneyNewRecord;
@@ -23,24 +23,24 @@ namespace Services
 
         public void CheckRecord()
         {
-            SerializedData currentData = DataService.Instance.Data;
+            SerializedData currentData = Storage.Instance.Data;
             SerializedData updatedData = currentData;
 
-            if (MoneyService.Instance.Money > currentData.MoneyRecord)
+            if (Money.Instance.Value > currentData.MoneyRecord)
             {
-                updatedData.MoneyRecord = MoneyService.Instance.Money;
+                updatedData.MoneyRecord = Money.Instance.Value;
 
                 OnMoneyNewRecord?.Invoke();
             }
 
-            if (DistanceService.Instance.Distance > currentData.DistanceRecord)
+            if (Distance.Instance.Value > currentData.DistanceRecord)
             {
-                updatedData.DistanceRecord = DistanceService.Instance.Distance;
+                updatedData.DistanceRecord = Distance.Instance.Value;
 
                 OnDistanceNewRecord?.Invoke();
             }
 
-            DataService.Instance.UpdateData(updatedData);
+            Storage.Instance.UpdateData(updatedData);
         }
 
         private void OnDisable()

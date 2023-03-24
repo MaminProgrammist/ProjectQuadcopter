@@ -17,7 +17,7 @@ namespace UI
         {
             if (_marker != null)
             {
-                UpdateService.Instance.OnUpdate += Mark;
+                Updater.Instance.OnUpdate += Mark;
                 _marker.gameObject.SetActive(true);
             }
         }
@@ -28,7 +28,7 @@ namespace UI
         {
             if (_marker != null)
             {
-                UpdateService.Instance.OnUpdate -= Mark;
+                Updater.Instance.OnUpdate -= Mark;
                 _marker.gameObject.SetActive(false);
             }
         }

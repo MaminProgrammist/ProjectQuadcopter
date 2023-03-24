@@ -17,7 +17,7 @@ namespace Components
 
         private void OnEnable()
         {
-            UpdateService.Instance.OnUpdate += Detect;
+            Updater.Instance.OnUpdate += Detect;
             _target = FindObjectOfType<Quadcopter>();
             _bypassCondition = true;
         }
@@ -43,6 +43,6 @@ namespace Components
 
         private bool CheckBypass() { return transform.position.z + _config.XDetectionDistanceLeft < _target.transform.position.z; }
         
-        private void OnDisable() => UpdateService.Instance.OnUpdate -= Detect;
+        private void OnDisable() => Updater.Instance.OnUpdate -= Detect;
     }
 }

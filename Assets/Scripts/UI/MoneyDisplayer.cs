@@ -6,12 +6,12 @@ namespace UI
     {
         private void OnEnable()
         {
-            MoneyService.Instance.OnChanged += Display;
+            Money.Instance.OnChanged += Display;
         }
 
         private void OnDisable()
         {
-            MoneyService.Instance.OnChanged -= Display;
+            Money.Instance.OnChanged -= Display;
         }
     }
 }
