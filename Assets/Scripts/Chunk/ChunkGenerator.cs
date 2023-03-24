@@ -36,13 +36,10 @@ namespace Chunk
             return true;
         }
 
-        public bool ResetChunks()
+        public void ResetChunks()
         {
             RemoveAllChunks();
             SpawnStartableChunks(_chunksContainer, _startableChunksCount);
-            _isPizzeriaRequested = true;
-            Debug.Log("Chunks re-enabled");
-            return true;
         }
 
         private void RemoveAllChunks()
@@ -67,6 +64,8 @@ namespace Chunk
 
             for (int i = 0; i < chunksCount; i++)
                 SpawnChunk();
+
+            _isPizzeriaRequested = true;
         }
 
         private void SpawnChunk()
