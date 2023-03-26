@@ -11,6 +11,7 @@ using UI;
 using Components;
 using Random = UnityEngine.Random;
 using Level;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Entities
 {
@@ -24,9 +25,11 @@ namespace Entities
         [SerializeField, BoxGroup("Configurations")] private ClientConfig _clientConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaEjectorConfig _pizzaEjectorConfig;
         [SerializeField, BoxGroup("Configurations")] private PizzaConfig _pizzaConfig;
+        [SerializeField, BoxGroup("Configurations")] private RopeConfig _ropeConfig;
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _birdsDensity;
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _carsDensity;
         [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _netGuysDensity;
+        [SerializeField, Range(0, 100), BoxGroup("SpawnDensity")] private int _ropeDensity;
         [SerializeField, Range(0, 1000)] private int _spawnDistance;
         private readonly WayMatrix _wayMatrix = new();
         private ChunkGenerator _chunkGenerator;
@@ -41,6 +44,7 @@ namespace Entities
         private Pool<WindowGuy> _windowGuyPool;
         private Pool<Battery> _batteryPool;
         private Pool<Client> _clientPool;
+        private Pool<Rope> _ropePool;
 
         private void Awake() => _chunkGenerator = FindObjectOfType<ChunkGenerator>();
 
@@ -49,6 +53,7 @@ namespace Entities
             _chunkGenerator.OnChunkSpawned += OnChunkSpawned;
             GlobalSpeed.Instance.OnStartup += SpawnCars;
             GlobalSpeed.Instance.OnStartup += SpawnBirds;
+            GlobalSpeed.Instance.OnStartup += SpawnRopes;
             GlobalSpeed.Instance.OnStop += StopAllCoroutines;
         }
 
@@ -66,6 +71,7 @@ namespace Entities
             _windowGuyPool?.ReleaseAll();
             _batteryPool?.ReleaseAll();
             _clientPool?.ReleaseAll();
+            _ropePool?.ReleaseAll();
             _quadcopter.gameObject.SetActive(true);
         }
 
@@ -114,6 +120,12 @@ namespace Entities
             EnablePizza(entityContainer);
             EnablePizzaGuy(entityContainer, chunkGenerator);
             EnableClient(entityContainer);
+            return true;
+        }
+
+        public bool EnableRopes(Container container)
+        {
+            _ropePool = new(new RopeFactory(_ropeConfig), container, 10);
             return true;
         }
 
@@ -189,7 +201,7 @@ namespace Entities
             }
         }
 
-        private IEnumerator BirdsSpawning(int line, int row)
+        private IEnumerator BirdsSpawning(int row, int line)
         {
             float delay = 0.5f;
             float maxDistance = 5f;
@@ -197,17 +209,15 @@ namespace Entities
 
             while (true)
             {
-                Vector3 position = _wayMatrix.GetPositionByArrayCoordinates(new Vector2Int(line, row));
+                Vector3 position = _wayMatrix.GetPositionByArrayCoordinates(new Vector2Int(row, line));
 
                 if (_birdsDensity > Random.Range(0, 100))
                 {
                     _birdPool.Get(position + Vector3.forward * _spawnDistance);
                     float speed = GlobalSpeed.Instance.Value + _birdConfig.SelfSpeed;
-                    float distanceBetweenBirds = Random.Range(minDistance, maxDistance);
+                    float distanceBetween = Random.Range(minDistance, maxDistance);
                     float acceleration = GlobalSpeed.Instance.Acceleration;
-
-                    delay = (Mathf.Sqrt(speed * speed + 2 * acceleration * (distanceBetweenBirds)) - speed) / acceleration;
-
+                    delay = (Mathf.Sqrt(speed * speed + 2 * acceleration * (distanceBetween)) - speed) / acceleration;
                     yield return new WaitForSeconds(delay);
                 }
 
@@ -217,11 +227,12 @@ namespace Entities
 
         public void SpawnBirds()
         {
+            int carRow = 1;
             if (_birdPool != null)
             {
-                for (int row = 0; row < 2; row++)
-                    for (int i = 0; i < WayMatrix.Width; i++)
-                        StartCoroutine(BirdsSpawning(i, row));
+                for (int line = 0; line < WayMatrix.Height - carRow; line++)
+                    for (int row = 0; row < WayMatrix.Width; row++)
+                        StartCoroutine(BirdsSpawning(row, line));
             } 
         }
 
@@ -263,14 +274,51 @@ namespace Entities
             }
         }
 
+        private void SpawnRopes()
+        {
+            if (_ropePool != null)
+            {
+                int carLine = 1;
+
+                for (int i = 0; i < WayMatrix.Height - carLine; i++)
+                {
+                    StartCoroutine(RopeSpawning(i));
+                }
+            }
+        }
+
+        private IEnumerator RopeSpawning(int line)
+        {
+            float delay = 0.5f;
+            float maxDistance = 5f;
+            float minDistance = 2f;
+            Vector3 position = _wayMatrix.GetPositionByArrayCoordinates(new Vector2Int(0, line));
+            position.x = 0;
+            position.z = WayMatrix.Horizon;
+
+            while (true)
+            {
+                if (_ropeDensity > Random.Range(0, 100))
+                {
+                    _ropePool.Get(position);
+                    float speed = GlobalSpeed.Instance.Value + _ropeConfig.SelfSpeed;
+                    float distanceBetween = Random.Range(minDistance, maxDistance);
+                    float acceleration = GlobalSpeed.Instance.Acceleration;
+                    delay = (Mathf.Sqrt(speed * speed + 2 * acceleration * (distanceBetween)) - speed) / acceleration;
+                    yield return new WaitForSeconds(delay);
+                }
+
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
         private void OnDisable()
         {
             _chunkGenerator.OnChunkSpawned -= OnChunkSpawned;
-            _chunkGenerator.OnChunkSpawned -= OnChunkSpawned;
             GlobalSpeed.Instance.OnStartup -= SpawnCars;
             GlobalSpeed.Instance.OnStartup -= SpawnBirds;
+            GlobalSpeed.Instance.OnStartup -= SpawnRopes;
             GlobalSpeed.Instance.OnStop -= StopAllCoroutines;
-            _deliverer.OnPizzeriaRequested -= RequestPizza;
         }
     }
 }

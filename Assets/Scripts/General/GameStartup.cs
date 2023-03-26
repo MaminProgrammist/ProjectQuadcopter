@@ -4,7 +4,6 @@ using UI;
 using Chunk;
 using Level;
 using Entities;
-using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using Reactions;
 
@@ -34,6 +33,7 @@ namespace General
             _entitySpawner.EnableQuadcopter(entityContainer, _defeatPanel, out Quadcopter quadcopter);
             _entitySpawner.EnableCarTraffic(entityContainer);
             _entitySpawner.EnableBirds(entityContainer);
+            _entitySpawner.EnableRopes(entityContainer);
             //_entitySpawner.EnableWindowGuys(entityContainer);
             //_entitySpawner.EnableBatteries(entityContainer);
             //_entitySpawner.EnableDelivery(entityContainer, _chunkGenerator);
