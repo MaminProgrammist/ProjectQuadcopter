@@ -10,8 +10,6 @@ using Chunk;
 using UI;
 using Components;
 using Random = UnityEngine.Random;
-using Level;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Entities
 {

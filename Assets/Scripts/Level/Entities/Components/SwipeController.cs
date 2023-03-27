@@ -50,8 +50,6 @@ namespace Components
             PlayerInput.Instance.OnVertical += MoveVertical;
         }
 
-        private void MoveVertical(int direction) => StartCoroutine(VerticalMotion(direction));
-
         public SwipeController SetStartablePosition(MatrixPosition position)
         {
             transform.position = _wayMatrix.GetPosition(position, out _currentPosition);
@@ -62,30 +60,35 @@ namespace Components
 
         private void MoveHorizontal(int direction)
         {
-            if (_canMove == false || direction == 0)
+            if (_canMove == false)
                 return;
 
-            UpdatePosition(new(direction, 0));
+            StartCoroutine(UpdatePosition(new(direction, 0)));
         }
 
-        private void UpdatePosition(Vector2Int positionShift)
+        private void MoveVertical(int direction) => StartCoroutine(VerticalMotion(direction));
+
+        private IEnumerator UpdatePosition(Vector2Int positionShift)
         {
-            CurrentPosition = new Vector2Int(CurrentPosition.x + positionShift.x, CurrentPosition.y - positionShift.y);
-            Vector3 updatedPosition = _wayMatrix.GetPositionByArrayCoordinates(CurrentPosition);
-            transform.DOMove(updatedPosition, _config.MotionDuration);
-            _animator.Play(_animations[positionShift]);
-            OnMove?.Invoke(updatedPosition);
+            if (positionShift != Vector2Int.zero)
+            {
+                CurrentPosition = new Vector2Int(CurrentPosition.x + positionShift.x, CurrentPosition.y - positionShift.y);
+                Vector3 updatedPosition = _wayMatrix.GetPositionByArrayCoordinates(CurrentPosition);
+                yield return transform.DOMove(updatedPosition, _config.MotionDuration).WaitForCompletion();
+                _animator.Play(_animations[positionShift]);
+                OnMove?.Invoke(updatedPosition);
+            }
         }
 
         private IEnumerator VerticalMotion(int direction)
         {
-            if (_canMove == false || direction == 0)
+            if (_canMove == false)
                 yield break;
 
             _canMove = false;
-            UpdatePosition(new(0, direction));
+            yield return UpdatePosition(new(0, direction));
             yield return new WaitForSeconds(_config.VerticalSideHoldingDuration);
-            UpdatePosition(new(0, -direction));
+            yield return UpdatePosition(new(0, -direction));
             _canMove = true;
         }
 
