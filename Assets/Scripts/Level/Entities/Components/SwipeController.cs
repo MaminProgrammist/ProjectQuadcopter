@@ -6,7 +6,6 @@ using General;
 using Services;
 using Entities;
 using System;
-using Cysharp.Threading.Tasks;
 using System.Collections;
 
 namespace Components
@@ -74,8 +73,8 @@ namespace Components
             {
                 CurrentPosition = new Vector2Int(CurrentPosition.x + positionShift.x, CurrentPosition.y - positionShift.y);
                 Vector3 updatedPosition = _wayMatrix.GetPositionByArrayCoordinates(CurrentPosition);
-                yield return transform.DOMove(updatedPosition, _config.MotionDuration).WaitForCompletion();
                 _animator.Play(_animations[positionShift]);
+                yield return transform.DOMove(updatedPosition, _config.MotionDuration).WaitForCompletion();
                 OnMove?.Invoke(updatedPosition);
             }
         }
