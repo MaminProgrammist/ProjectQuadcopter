@@ -15,8 +15,8 @@ MonoBehaviour:
   _prefab: {fileID: 163720967156421028, guid: 22f90b340925e154894b222624c01db1, type: 3}
   _motionDuration: 3
   _verticalSideHoldingDuration: 6
-  _lives: 3
-  _immortalModeTime: 4
+  _lives: 1
+  _immortalModeTime: 5
   _charge: 3
   _chargeDecreaseTime: 10
   _money: 0

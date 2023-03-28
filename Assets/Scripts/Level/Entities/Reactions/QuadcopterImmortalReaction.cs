@@ -2,6 +2,9 @@
 using UnityEngine;
 using Entities;
 using Components;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 namespace Reactions
 {
@@ -38,17 +41,10 @@ namespace Reactions
         {
             _collider.enabled = false;
             _renderer.enabled = true;
-            float currentTime = 0;
-            float flickeringSpeed = 5f;
             Color defaultColor = _renderer.material.color;
-
-            while (currentTime < _config.ImmortalModeTime)
-            {
-                _renderer.material.color = new Color(defaultColor.r, defaultColor.g, defaultColor.b, Mathf.PingPong(Time.time * flickeringSpeed, 1));
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-
+            TweenerCore<Color, Color, ColorOptions> tween = _renderer.material.DOColor(Color.green, 0.25f).SetLoops(-1, LoopType.Yoyo);
+            yield return new WaitForSeconds(_config.ImmortalModeTime);
+            tween.Kill();
             _renderer.material.color = defaultColor;
             _collider.enabled = true;
             yield break;

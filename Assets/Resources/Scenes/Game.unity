@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 446749864}
   - component: {fileID: 446749867}
   m_Layer: 5
-  m_Name: Money Displayer
+  m_Name: Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -563,12 +563,12 @@ GameObject:
   - component: {fileID: 593717925}
   - component: {fileID: 593717927}
   m_Layer: 5
-  m_Name: Life Displayer
+  m_Name: Lifes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &593717924
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1218,7 +1218,7 @@ GameObject:
   - component: {fileID: 948753736}
   - component: {fileID: 948753738}
   m_Layer: 5
-  m_Name: Distance Displayer
+  m_Name: Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2349,7 +2349,7 @@ GameObject:
   - component: {fileID: 1785736756}
   - component: {fileID: 1785736755}
   m_Layer: 5
-  m_Name: Charge Displayer
+  m_Name: Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2810,7 +2810,7 @@ GameObject:
   - component: {fileID: 2019433810}
   - component: {fileID: 2019433811}
   m_Layer: 5
-  m_Name: Defea tPanel
+  m_Name: Defeat Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
