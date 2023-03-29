@@ -6,6 +6,7 @@ using UI;
 using Components;
 using Reactions;
 using Cinemachine;
+using Sound;
 
 namespace Entities
 {
@@ -31,8 +32,6 @@ namespace Entities
 
             Money.Instance.SetInitialAmount();
 
-            AudioSource audioSource = quadcopter.GetComponent<AudioSource>();
-
             SwipeController swipeController = quadcopter.gameObject.AddComponent<SwipeController>();
             swipeController.Receive(_config);
             swipeController.enabled = false;
@@ -56,24 +55,21 @@ namespace Entities
 
             deliverer.OnDeliverySequenceFailed += () =>
             {
-                audioSource.clip = _config.PoofSound;
-                audioSource.Play();
+                GameSound.Instance.PlaySound(quadcopter.transform, _config.PoofSound, 1f, 0f, false, false);
                 poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnSuccessfulDelivery += () =>
             {
-                audioSource.clip = _config.PoofSound;
-                audioSource.Play();
+                GameSound.Instance.PlaySound(quadcopter.transform, _config.PoofSound, 1f, 0f, false, false);
                 poofParticle.Play();
                 pizza.gameObject.SetActive(false);
             };
 
             deliverer.OnPizzaGrabbed += () =>
             {
-                audioSource.clip = _config.PoofSound;
-                audioSource.Play();
+                GameSound.Instance.PlaySound(quadcopter.transform, _config.PoofSound, 1f, 0f, false, false);
                 poofParticle.Play();
                 pizza.gameObject.SetActive(true);
             };

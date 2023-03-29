@@ -4,6 +4,7 @@ using Services;
 using Entities;
 using Components;
 using General;
+using Sound;
 
 namespace Reactions
 {
@@ -17,7 +18,6 @@ namespace Reactions
         private QuadcopterNextReaction _nextReaction;
         private PizzaFallenReaction _pizzaFallenReaction;
         private ParticleSystem _destroyingParticle;
-        private AudioSource _audioSource;
 
         public TakeDamageReaction(Quadcopter quadcopter, QuadcopterConfig config, ParticleSystem destroyingParticle)
         {
@@ -29,7 +29,6 @@ namespace Reactions
             _nextReaction = new QuadcopterNextReaction(quadcopter, config);
             _pizzaFallenReaction = new(quadcopter.GetComponent<Deliverer>());
             _destroyingParticle = destroyingParticle;
-            _audioSource = quadcopter.GetComponent<AudioSource>();
         }
 
         public override void React()
@@ -50,8 +49,7 @@ namespace Reactions
         {
             if (_detectableEntity is Weapon == false)
             {
-                _audioSource.clip = _config.DestroyingSound;
-                _audioSource.Play();
+                GameSound.Instance.PlaySound(_lifer.transform, _config.DestroyingSound, 1f, 0f, false, false);
                 _destroyingParticle.Play();
             }
 
