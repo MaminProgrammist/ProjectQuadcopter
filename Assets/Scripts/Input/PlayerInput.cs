@@ -28,8 +28,12 @@ namespace Input
             if (swipeDirection.magnitude >= _deadZone)
             {
                 Vector2Int direction = CalculateDirection(swipeDirection.normalized);
-                OnHorizontal?.Invoke(direction.x);
-                OnVertical?.Invoke(direction.y);
+
+                if (direction.x != 0)
+                    OnHorizontal?.Invoke(direction.x);
+
+                if (direction.y != 0)
+                    OnVertical?.Invoke(direction.y);
             }
 
             if (finger.currentTouch.isTap)

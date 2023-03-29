@@ -12,15 +12,13 @@ namespace Entities
 {
     public class QuadcopterFactory : EntityFactory<Quadcopter, QuadcopterConfig>
     {
-        private LifeDisplayer _lifeCounter;
         private DefeatPanel _defeatPanel;
         private AdsRewardedButton _rewardedButton;
         private RestartLevelButton _levelRestarter;
 
-        public QuadcopterFactory(QuadcopterConfig config, Container container, LifeDisplayer lifeCounter, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton, RestartLevelButton levelRestarter)
+        public QuadcopterFactory(QuadcopterConfig config, Container container, DefeatPanel defeatPanel, AdsRewardedButton rewardedButton, RestartLevelButton levelRestarter)
             : base(config, container) 
         {
-            _lifeCounter = lifeCounter;
             _defeatPanel = defeatPanel;
             _rewardedButton = rewardedButton;
             _levelRestarter = levelRestarter;
@@ -37,7 +35,6 @@ namespace Entities
             swipeController.enabled = false;
 
             Lifer lifer = quadcopter.gameObject.AddComponent<Lifer>();
-            lifer.OnChanged += _lifeCounter.Display;
             lifer.Receive(_config);
             lifer.Restore();
             lifer.OnDeath += () => _defeatPanel.gameObject.SetActive(true);

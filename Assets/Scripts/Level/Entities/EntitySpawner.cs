@@ -10,8 +10,6 @@ using Chunk;
 using UI;
 using Components;
 using Random = UnityEngine.Random;
-using Level;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Entities
 {
@@ -81,8 +79,8 @@ namespace Entities
             AdsRewardedButton rewardedButton = FindObjectOfType<AdsRewardedButton>();
             RestartLevelButton levelRestarter = FindObjectOfType<RestartLevelButton>(); 
 
-            _quadcopter = new QuadcopterFactory(_quadcopterConfig, entityContainer,
-                lifeCounter, defeatPanel, rewardedButton, levelRestarter).GetCreated();
+            _quadcopter = new QuadcopterFactory(_quadcopterConfig, entityContainer, defeatPanel,
+                rewardedButton, levelRestarter).GetCreated();
 
             _deliverer = _quadcopter.GetComponent<Deliverer>();
             quadcopter = _quadcopter;
